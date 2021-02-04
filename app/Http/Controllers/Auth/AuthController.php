@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
@@ -29,7 +30,7 @@ class AuthController extends Controller
 
         //Todo make remember me, correctly
         if (! $token = auth()->attempt($credentials)) {
-            return response()->json(['error' =>  __('auth.failed')], 401);
+            return response()->json(['error' =>  __('auth.failed')], Response::HTTP_UNAUTHORIZED);
         }
 
         return $this->respondWithToken($token);
@@ -40,7 +41,7 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function me()
+    public function me(): \Illuminate\Http\JsonResponse
     {
         return response()->json([
             'user' => new UserResource($this->guard()->user())
@@ -52,7 +53,7 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function logout()
+    public function logout(): \Illuminate\Http\JsonResponse
     {
         auth()->logout();
 
@@ -64,7 +65,7 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function refresh()
+    public function refresh(): \Illuminate\Http\JsonResponse
     {
         return $this->respondWithToken(auth()->refresh());
     }
@@ -76,7 +77,7 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function respondWithToken($token)
+    protected function respondWithToken($token): \Illuminate\Http\JsonResponse
     {
         return response()->json([
             'access_token' => $token,
