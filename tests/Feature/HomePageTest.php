@@ -5,19 +5,16 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class ExampleTest extends TestCase
+class HomePageTest extends TestCase
 {
     /**
      * A basic test example.
      *
      * @return void
      */
-    public function testBasicTest()
+    public function testIsThereNotAnyErrorsOnHomePage()
     {
         $response = $this->get('/');
-        
-        $response->assertSee('laravel');
-
         $response->assertStatus(200);
     }
 }
