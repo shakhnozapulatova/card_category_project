@@ -11,30 +11,20 @@ class AuthControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    private $user;
 
     private $jwtToken;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->user = User::factory()->create([
+
+        $user = User::factory()->create([
             'name' => 'test',
             'email' => 'test@gmail.com',
             'password' => bcrypt('123456')
         ]);
 
-        $this->jwtToken = auth()->tokenById($this->user->id);
-    }
-
-    public function test_unsuccessfully_login_via_api()
-    {
-        $response = $this->post('api/auth/login', [
-            'email' => 'wrongEmail@mail.com',
-            'password' => 'wrongPass'
-        ]);
-
-        $response->assertUnauthorized();
+        $this->jwtToken = auth()->tokenById($user->id);
     }
 
     public function test_successfully_login_via_api()

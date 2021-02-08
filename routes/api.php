@@ -24,3 +24,10 @@ Route::group([
     Route::post('refresh', 'AuthController@refresh');
     Route::post('me', 'AuthController@me');
 });
+
+
+Route::group([
+    'middleware' => 'auth:api',
+], function () {
+    Route::resource('category', \App\Http\Controllers\CategoriesController::class);
+});
