@@ -1,11 +1,10 @@
-import axios from 'axios'
-import authConfig from './utils'
+import AuthService from '@/services/AuthService'
 
 export default {
   login ({ commit, dispatch }, credentials) {
-    return axios.post('auth/login', credentials)
+    return AuthService.login(credentials)
       .then(({ data }) => {
-        commit('authSuccess', data)
+        commit('setToken', data)
         return dispatch('fetchUser')
       })
       .catch((error) => {
@@ -14,46 +13,24 @@ export default {
       })
   },
   logOut ({ commit }) {
-    return axios.post('auth/logout', '', authConfig())
+    return AuthService.logOut()
       .then(() => {
         commit('authFailed')
       })
-      .catch((error) => {
-        console.error(error)
-      })
-  },
-  register ({ commit, dispatch }, credentials) {
-    return axios.post('auth/register', credentials)
-      .then(({ data }) => {
-        commit('authSuccess', data)
-        return dispatch('fetchUser')
-      })
-      .catch((error) => {
-        commit('authFailed')
-        console.error(error)
-        return Promise.reject(error)
-      })
   },
   fetchUser ({ commit }) {
-    return axios.post('auth/me', '', authConfig())
+    return AuthService.currentUser()
       .then(({ data }) => {
+        commit('authSuccess')
         commit('setUser', data)
         return Promise.resolve(data)
       })
-      .catch((error) => {
-        commit('authFailed')
-        return Promise.reject(error)
-      })
   },
   refreshToken ({ commit }) {
-    return axios.post('auth/refresh', '', authConfig())
+    return AuthService.refreshToken()
       .then(({ data }) => {
         commit('authSuccess', data)
         return Promise.resolve(data)
-      })
-      .catch((error) => {
-        commit('authFailed')
-        return Promise.reject(error)
       })
   },
 }

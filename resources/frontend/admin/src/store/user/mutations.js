@@ -9,14 +9,18 @@ export default {
     state.permissions = []
     localStorage.removeItem('token')
   },
-  authSuccess (state, payload) {
+  authSuccess (state) {
     state.authError = false
     state.isLoggedIn = true
-    state.isActive = false
-
-    if (payload.access_token) {
-      state.token = payload.access_token
-      localStorage.setItem('token', payload.access_token)
+    state.isActive = true
+  },
+  setToken (state, payload) {
+    try {
+      const token = payload.access_token
+      state.token = token
+      localStorage.setItem('token', token)
+    } catch (e) {
+      console.error(e)
     }
   },
   setUser (state, payload) {
