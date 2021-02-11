@@ -48,7 +48,7 @@ export default {
       {
         name: 'update-category',
         path: 'update-category/:id',
-        component: () => import('@/components/dashboard/pages/staffs/CreateUpdate'),
+        component: () => import('@/components/dashboard/pages/categories/Update'),
         meta: {
           middleware: [
             auth,
@@ -56,9 +56,9 @@ export default {
         },
       },
       {
-        name: 'staff',
-        path: 'staff',
-        component: () => import('@/components/dashboard/pages/staffs/Index'),
+        name: 'users',
+        path: 'users',
+        component: () => import('@/components/dashboard/pages/users/Index'),
         meta: {
           middleware: [
             auth,
@@ -66,14 +66,14 @@ export default {
         },
       },
       {
-        name: 'create-staff',
-        path: 'create-staff',
-        component: () => import('@/components/dashboard/pages/staffs/CreateUpdate'),
+        name: 'add-user',
+        path: 'add-user',
+        component: () => import('@/components/dashboard/pages/users/Create'),
       },
       {
-        name: 'update-staff',
-        path: 'update-staff/:id',
-        component: () => import('@/components/dashboard/pages/staffs/CreateUpdate'),
+        name: 'update-user',
+        path: 'add-user/:id',
+        component: () => import('@/components/dashboard/pages/users/Update'),
         meta: {
           middleware: [
             auth,

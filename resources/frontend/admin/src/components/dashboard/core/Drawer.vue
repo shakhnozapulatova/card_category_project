@@ -66,8 +66,8 @@
 
     computed: {
       ...mapState(['barColor', 'barImage']),
-      ...mapActions('user', ['logOut']),
-      ...mapGetters({ user: 'user/currentUser' }),
+      ...mapActions('auth', ['logOut']),
+      ...mapGetters({ user: 'auth/currentUser' }),
       drawer: {
         get () {
           return this.$store.state.drawer
@@ -96,7 +96,7 @@
         return {
           avatar: true,
           group: '',
-          title: this.user.first_name + ' ' + this.user.last_name,
+          title: this.user.name,
           children: [
             {
               to: `update-staff/${this.user.id}`,

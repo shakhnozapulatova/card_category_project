@@ -1,5 +1,5 @@
 export default function isAdmin ({ next, store }) {
-  if (!store.state.user.isEditor) {
+  if (!store.state.auth.isEditor) {
     return next({
       name: 'login',
     })

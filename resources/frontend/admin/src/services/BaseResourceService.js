@@ -1,5 +1,5 @@
 import Http from '@/services/HttpService'
-import authConfig from '@/store/user/utils'
+import authConfig from '@/store/auth/utils'
 
 export class BaseResourceService {
   static get entity () {

@@ -27,7 +27,7 @@ function boot () {
   }).$mount('#app')
 }
 // extract user before vue instance created
-store.dispatch('user/fetchUser')
+store.dispatch('auth/fetchUser')
   .then(() => {
     boot()
   })

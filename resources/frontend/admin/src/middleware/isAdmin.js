@@ -1,5 +1,5 @@
 export default function isAdmin ({ next, store }) {
-  if (!store.state.user.isAdmin) {
+  if (!store.state.auth.isAdmin) {
     return next({
       name: 'home',
     })

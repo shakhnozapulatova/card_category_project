@@ -25,7 +25,7 @@ axios.interceptors.response.use((response) => {
     })
   }
 
-  return store.dispatch('user/refreshToken')
+  return store.dispatch('auth/refreshToken')
     .then((data) => {
       const config = error.config
       config.headers.Authorization = `Bearer ${data.access_token}`

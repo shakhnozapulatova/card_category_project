@@ -1,5 +1,5 @@
 import HttpService from '@/services/HttpService'
-import authConfig from '@/store/user/utils'
+import authConfig from '@/store/auth/utils'
 
 export default class AuthService {
   static login (credentials) {

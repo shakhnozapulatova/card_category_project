@@ -21,7 +21,7 @@ export default {
   fetchUser ({ commit }) {
     return AuthService.currentUser()
       .then(({ data }) => {
-        commit('authSuccess')
+        commit('authSuccess', data)
         commit('setUser', data)
         return Promise.resolve(data)
       })

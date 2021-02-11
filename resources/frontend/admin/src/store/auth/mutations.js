@@ -9,7 +9,7 @@ export default {
     state.permissions = []
     localStorage.removeItem('token')
   },
-  authSuccess (state) {
+  authSuccess (state, payload) {
     state.authError = false
     state.isLoggedIn = true
     state.isActive = true

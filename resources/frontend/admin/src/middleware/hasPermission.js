@@ -1,5 +1,5 @@
 export default function auth ({ next, store }) {
-  if (!store.getters.user.id || localStorage.getItem('token')) {
+  if (!store.getters.auth.id || localStorage.getItem('token')) {
     return next({
       name: 'login',
     })

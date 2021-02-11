@@ -98,7 +98,7 @@
       },
     },
     methods: {
-      ...mapActions('user', ['login']),
+      ...mapActions('auth', ['login']),
       auth () {
         this.error = false
         const data = {
@@ -112,7 +112,7 @@
           this.login(data)
             .then(() => {
               this.loading = false
-              this.$router.push({ name: 'home' })
+              this.$router.push({ name: 'categories' })
             })
             .catch(({ response }) => {
               this.message = response.data.error
