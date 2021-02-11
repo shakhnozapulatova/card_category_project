@@ -1,4 +1,4 @@
-import Http from '@/utils/Http'
+import Http from '@/services/HttpService'
 import authConfig from '@/store/user/utils'
 
 export class BaseResourceService {
@@ -6,29 +6,35 @@ export class BaseResourceService {
     throw new Error('entity getter not defined')
   }
 
-  constructor () {
-    this.requester = new Http()
+  static createResource (params) {
+    return Http.post(this.entity, params, authConfig())
   }
 
-  createResource (params) {
-    return this.requester.post(this.entity, params, authConfig())
-  }
-
-  updateResource (id, params) {
+  static updateResource (id, params) {
     const url = this.entity + '/' + id
-    return this.requester.put(url, params, authConfig())
+    return Http.put(url, params, authConfig())
   }
 
-  deleteResourceById (id) {
+  static deleteResourceById (id) {
     const url = this.entity + '/' + id
-    return this.requester.delete(url, {}, authConfig())
+    return Http.delete(url, {}, authConfig())
   }
 
-  getResourceById (id) {
-    return this.requester.get(id)
+  static getResourceById (id) {
+    return Http.get(id)
   }
 
-  getResourceList (params = {}) {
-    return this.requester.get(this.entity, params, authConfig())
+  static getResourceList (params = {}) {
+    return Http.get(this.entity, params, authConfig())
+  }
+
+  static getUpdateForm (id) {
+    const url = this.entity + '/' + id + '/edit'
+    return Http.put(url, {}, authConfig())
+  }
+
+  static getCreateForm () {
+    const url = this.entity + '/create'
+    return Http.get(url, {}, authConfig())
   }
 }

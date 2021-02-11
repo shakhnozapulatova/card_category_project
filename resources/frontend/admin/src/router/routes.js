@@ -26,9 +26,29 @@ export default {
     },
     children: [
       {
-        name: 'home',
-        path: 'home',
-        component: () => import('@/components/dashboard/Dashboard'),
+        name: 'categories',
+        path: 'categories',
+        component: () => import('@/components/dashboard/pages/categories/Index'),
+        meta: {
+          middleware: [
+            auth,
+          ],
+        },
+      },
+      {
+        name: 'add-category',
+        path: 'add-category',
+        component: () => import('@/components/dashboard/pages/categories/Create'),
+        meta: {
+          middleware: [
+            auth,
+          ],
+        },
+      },
+      {
+        name: 'update-category',
+        path: 'update-category/:id',
+        component: () => import('@/components/dashboard/pages/staffs/CreateUpdate'),
         meta: {
           middleware: [
             auth,

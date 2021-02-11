@@ -2,7 +2,7 @@ import axios from 'axios'
 
 export default class HttpService {
   static get (url, params = {}, headers) {
-    return this.makeRequest('get', params, headers)
+    return this.makeRequest(url, 'get', params, headers)
   }
 
   static post (url, params = {}, headers) {
@@ -22,11 +22,18 @@ export default class HttpService {
   }
 
   static makeRequest (url, method, params, headers) {
-    return axios.request({
+    const config = {
       method: method,
       url: url,
-      data: params,
       headers: headers,
-    })
+    }
+
+    if (method === 'get') {
+      config.params = params
+    } else {
+      config.data = params
+    }
+
+    return axios.request(config)
   }
 }
