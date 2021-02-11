@@ -13,14 +13,16 @@ class CategoryTest extends TestCase
 
     private $jwtToken;
 
+    private $category;
+
     public function setUp(): void
     {
         parent::setUp();
 
         $user = User::factory()->create();
+        $this->category = Category::factory()->create();
         $this->jwtToken = auth()->tokenById($user->id);
     }
-
 
 
     public function test_index()
@@ -36,7 +38,6 @@ class CategoryTest extends TestCase
     {
         $data = [
             'name' => 'Store name',
-            'slug' => 'Store_name'
         ];
 
         $this->post(route('category.store'),
@@ -61,11 +62,28 @@ class CategoryTest extends TestCase
         $response->assertStatus(422);
     }
 
+
+    public function test_category_create_form()
+    {
+        $response = $this->get(route('category.create'), [
+            'Authorization' => 'Bearer ' . $this->jwtToken
+        ]);
+
+        $response->assertJsonStructure(['form']);
+    }
+
+    public function test_category_update_form()
+    {
+        $response = $this->get(route('category.edit', $this->category->id), [
+            'Authorization' => 'Bearer ' . $this->jwtToken
+        ]);
+
+        $response->assertJsonStructure(['form']);
+    }
+
     public function test_update()
     {
-        $category = Category::factory()->create();
-
-        $response = $this->put(route('category.update', $category->id),
+        $response = $this->put(route('category.update', $this->category->id),
             [
                 'name' => 'Update name',
                 'slug' => 'update_name'
@@ -80,9 +98,7 @@ class CategoryTest extends TestCase
 
     public function test_show()
     {
-        $category = Category::factory()->create();
-
-        $response = $this->get(route('category.show', $category->id),
+        $response = $this->get(route('category.show', $this->category->id),
             [
                 'Authorization' => 'Bearer ' . $this->jwtToken
             ]
@@ -93,15 +109,13 @@ class CategoryTest extends TestCase
 
     public function test_delete()
     {
-        $category = Category::factory()->create();
-
-        $this->delete(route('category.destroy', $category->id),
+        $this->delete(route('category.destroy', $this->category->id),
             [],
             [
                 'Authorization' => 'Bearer ' . $this->jwtToken
             ]
         );
 
-        $this->assertDeleted($category);
+        $this->assertDeleted($this->category);
     }
 }

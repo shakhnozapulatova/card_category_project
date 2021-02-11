@@ -39,7 +39,7 @@ class CategoriesController extends Controller
         $category = new Category;
 
         $category->name = $validated['name'];
-        $category->slug = $validated['slug'];
+        $category->parent_id = $validated['parent_id'] ?? null;
         $category->order = $validated['order'] ?? 0;
 
         $category->save();
@@ -62,7 +62,7 @@ class CategoriesController extends Controller
         $validated = $request->validated();
 
         $category->name = $validated['name'];
-        $category->slug = $validated['slug'];
+        $category->parent_id = $validated['parent_id'] ?? null;
         $category->order = $validated['order'] ?? 0;
 
         $category->save();

@@ -11,8 +11,7 @@ class CategoryRequest extends JsonRequest
         return [
             'name' => ['required', 'string'],
             'order' => ['nullable', 'integer'],
-            'slug' => ['required', 'string', 'alpha_dash'],
-            'parent_id' => ['nullable', 'integer']
+            'parent_id' => ['nullable', 'integer'],
         ];
     }
 }

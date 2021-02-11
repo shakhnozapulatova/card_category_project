@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCategoriesTable extends Migration
+class AddParentIdColumn extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,8 @@ class CreateCategoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('categories', function (Blueprint $table) {
-            $table->id();
-            $table->string('name')->index();
-            $table->integer('order')->default(0)->index();
-            $table->timestamps();
+        Schema::table('categories', function (Blueprint $table) {
+            $table->bigInteger('parent_id')->nullable()->after('name');
         });
     }
 
@@ -28,6 +25,8 @@ class CreateCategoriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('categories');
+        Schema::table('categories', function (Blueprint $table) {
+            $table->bigInteger('parent_id')->default(null)->after('name');
+        });
     }
 }
