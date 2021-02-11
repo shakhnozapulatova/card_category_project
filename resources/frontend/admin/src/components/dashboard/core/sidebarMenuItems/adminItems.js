@@ -5,19 +5,19 @@ export default [
     to: '/home',
   },
   {
-    icon: 'mdi-account-multiple',
-    title: 'staff',
+    icon: 'mdi-shape-outline ',
+    title: 'Категории',
     group: '',
     children: [
       {
-        to: 'staff',
-        avatar: 'mdi-view-comfy',
-        title: 'Пользователи',
+        to: 'categories',
+        avatar: 'mdi-clipboard-outline',
+        title: 'Список категорий',
       },
       {
-        to: 'create-staff',
+        to: 'add-category',
         avatar: 'mdi-clipboard-outline',
-        title: 'Создать пользователя',
+        title: 'Создать категорию',
       },
     ],
   },
