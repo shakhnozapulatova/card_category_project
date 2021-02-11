@@ -1,6 +1,6 @@
 <template>
   <validation-observer ref="obs" v-slot="{ handleSubmit }">
-    <v-form :data-vv-scope="scope" @submit.prevent="handleSubmit(handle)">
+    <v-form :data-vv-scope="scope" @submit.prevent="handleSubmit(onSubmit)">
       <v-row>
         <v-col
           v-for="(field, index) in schema"
@@ -32,7 +32,9 @@
             large
             type="submit"
           >
-            {{ buttonText }}
+            <slot name="submitText">
+              Отправить
+            </slot>
           </v-btn>
         </v-card-actions>
       </slot>
@@ -71,37 +73,16 @@
         type: Array,
         default: () => [],
       },
-      method: {
-        type: String,
-        default: 'post',
-        validator: (method) => {
-          return ['post', 'get', 'put', 'delete'].includes(method.toLowerCase())
-        },
-      },
       scope: {
         type: String,
         required: true,
       },
-      currentItem: {
-        type: Object,
-        default: () => {
-          Promise.resolve()
-        },
+      loading: {
+        type: Boolean,
+        default: false,
       },
     },
-    data: () => ({
-      loading: false,
-    }),
     computed: {
-      buttonText () {
-        let text
-        if (this.method === 'post') {
-          text = 'Добавить'
-        } else if (['put', 'patch'].includes(this.method)) {
-          text = 'Обновить'
-        }
-        return text
-      },
       fieldsValue () {
         const values = {}
         this.schema.forEach((field) => {

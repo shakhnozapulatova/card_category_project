@@ -1,6 +1,6 @@
 <template>
   <v-data-table
-    :items="$store.getters[getter]"
+    :items="items"
     :headers="headers"
     :loading="loading"
     :server-items-length="total"
@@ -73,7 +73,7 @@
   export default {
     name: 'DataTable',
     props: {
-      fetchUrl: {
+      action: {
         type: String,
         required: true,
       },
@@ -84,12 +84,6 @@
       searchOptions: {
         type: [Object, FormData],
         default: () => ({}),
-      },
-      mutation: {
-        type: String,
-      },
-      getter: {
-        type: String,
       },
     },
     data: () => ({
@@ -125,13 +119,11 @@
           sortBy = null,
         } = this.options
 
-        this.$http.get(this.fetchUrl, {
-          params: {
-            ...this.searchOptions,
-            perPage: itemsPerPage === -1 ? 10000000 : itemsPerPage,
-            page: page,
-            orderBy: sortBy ? sortBy[0] : null,
-          },
+        this.$store.dispatch(this.action, {
+          ...this.searchOptions,
+          perPage: itemsPerPage === -1 ? 10000000 : itemsPerPage,
+          page: page,
+          orderBy: sortBy ? sortBy[0] : null,
         })
           .then(({ data }) => {
             this.items = []
@@ -139,13 +131,12 @@
               el.expanded = false
               this.items.push(el)
             })
-            this.$store.commit(this.mutation, this.items)
             this.meta = data.meta
             this.loading = false
           })
-          .catch((response) => {
+          .catch((err) => {
             this.loading = false
-            console.error(response)
+            throw err
           })
       },
       setOptions (options) {

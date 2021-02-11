@@ -36,7 +36,7 @@
         type: String,
         default: '',
       },
-      nextRouteName: {
+      redirectRoute: {
         type: String,
         default: '',
       },
