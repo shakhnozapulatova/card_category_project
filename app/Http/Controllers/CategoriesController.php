@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+ use App\Enums\Pagination;
+use App\Forms\CategoryForm;
 use App\Http\Requests\CategoryRequest;
 use App\Http\Resources\CategoryResource;
 use App\Models\Category;
@@ -11,6 +13,8 @@ class CategoriesController extends Controller
 {
     public function index(Request $request): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
+        $perPage = $request->get('perPage', Pagination::DEFAULT_PER_PAGE);
+
         $categories = Category::query()
             ->when($request->get('name'), function ($query, $categoryName) {
                 $query->where('name', 'like', "%$categoryName%");
@@ -18,9 +22,14 @@ class CategoriesController extends Controller
             ->when($request->get('parent_id'), function ($query, $parent_id) {
                 $query->where('parent_id', $parent_id);
             })
-            ->get();
+            ->paginate($perPage);
 
         return CategoryResource::collection($categories);
+    }
+
+    public function create(CategoryForm $form): \Illuminate\Http\JsonResponse
+    {
+        return response()->json(['form' => $form->get()]);
     }
 
     public function store(CategoryRequest $request): \Illuminate\Http\JsonResponse
@@ -38,6 +47,10 @@ class CategoriesController extends Controller
         return response()->json(['message' => 'Category created'], 201);
     }
 
+    public function edit(Category $category, CategoryForm $form): \Illuminate\Http\JsonResponse
+    {
+        return response()->json(['form' => $form->fill($category)->get()]);
+    }
 
     public function show(Category $category): CategoryResource
     {
