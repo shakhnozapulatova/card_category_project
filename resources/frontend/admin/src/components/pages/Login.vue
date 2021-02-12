@@ -112,7 +112,7 @@
           this.login(data)
             .then(() => {
               this.loading = false
-              this.$router.push({ name: 'categories' })
+              this.$router.push({ name: 'home' })
             })
             .catch(({ response }) => {
               this.message = response.data.error

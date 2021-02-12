@@ -50,19 +50,6 @@ class CategoryTest extends TestCase
         $this->assertDatabaseHas('categories', $data);
     }
 
-    public function test_store_with_missing_data()
-    {
-        $response = $this->post(route('category.store'),
-            [],
-            [
-                'Authorization' => 'Bearer ' . $this->jwtToken
-            ]
-        );
-
-        $response->assertStatus(422);
-    }
-
-
     public function test_category_create_form()
     {
         $response = $this->get(route('category.create'), [

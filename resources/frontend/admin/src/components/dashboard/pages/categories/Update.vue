@@ -46,7 +46,7 @@
       ...mapMutations('alert', ['errorMessage', 'successMessage']),
       update () {
         this.loading = true
-        this.updateCategory(this.id, this.formValue)
+        this.updateCategory({ id: this.id, params: this.formValue })
           .then(() => {
             this.$router.push({ name: 'categories' })
             this.successMessage('Категория создана')

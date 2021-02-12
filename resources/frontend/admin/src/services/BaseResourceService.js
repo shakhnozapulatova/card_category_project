@@ -30,7 +30,7 @@ export class BaseResourceService {
 
   static getUpdateForm (id) {
     const url = this.entity + '/' + id + '/edit'
-    return Http.put(url, {}, authConfig())
+    return Http.get(url, {}, authConfig())
   }
 
   static getCreateForm () {

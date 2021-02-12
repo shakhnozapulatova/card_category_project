@@ -18,10 +18,10 @@ export default class HttpService {
   }
 
   static delete (url, params = {}, headers) {
-    return this.makeRequest(url, 'patch', headers)
+    return this.makeRequest(url, 'delete', headers)
   }
 
-  static makeRequest (url, method, params, headers) {
+  static makeRequest (url, method, params = {}, headers = {}) {
     const config = {
       method: method,
       url: url,

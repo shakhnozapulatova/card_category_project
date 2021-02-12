@@ -12,8 +12,8 @@ export default {
     createCategory ({ commit }, data) {
       return CategoryService.createResource(data)
     },
-    updateCategory ({ commit }, id, data) {
-      return CategoryService.updateResource(id, data)
+    updateCategory ({ commit }, { id, params }) {
+      return CategoryService.updateResource(id, params)
     },
     deleteCategory ({ commit }, id) {
       return CategoryService.deleteResourceById(id)

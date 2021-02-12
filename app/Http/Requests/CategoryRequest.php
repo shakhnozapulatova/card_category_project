@@ -10,8 +10,8 @@ class CategoryRequest extends JsonRequest
     {
         return [
             'name' => ['required', 'string'],
-            'order' => ['nullable', 'integer'],
             'parent_id' => ['nullable', 'integer'],
+            'order' => ['nullable', 'integer'],
         ];
     }
 }

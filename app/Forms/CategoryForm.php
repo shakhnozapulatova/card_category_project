@@ -4,12 +4,10 @@ namespace App\Forms;
 
 use App\Models\Category;
 use App\Services\HierarchicalFormatter;
-use Illuminate\Database\Eloquent\Collection;
 use Saodat\FormBase\Contracts\FormBuilderInterface;
 
 class CategoryForm extends AbstractForm
 {
-    protected $fieldsDefinitions = [];
     /**
      * @var HierarchicalFormatter
      */
@@ -24,7 +22,7 @@ class CategoryForm extends AbstractForm
     protected function buildForm()
     {
         $this->formBuilder
-            ->add('text', 'name', 'Категории',
+            ->add('text', 'name', 'Наименование',
                 [
                     'validationRule' => 'required',
                     'attributes' => [
@@ -37,11 +35,21 @@ class CategoryForm extends AbstractForm
         $this->formBuilder->add('treeselect', 'parent_id', 'Родительская категория',
             [
                 'options' => $this->hierarchicalFormatter->formatRecursively(Category::all()->toArray()),
+                'placeholder' => 'Родительская категория',
                 'attributes' => [
                     'outlined' => true,
                     'cols' => 12
                 ],
             ]);
+
+        $this->formBuilder
+            ->add('number', 'order', 'Порядок',
+                [
+                    'attributes' => [
+                        'outlined' => true,
+                        'cols' => 12
+                    ],
+                ]);
     }
 
     public function fill(Category $category)

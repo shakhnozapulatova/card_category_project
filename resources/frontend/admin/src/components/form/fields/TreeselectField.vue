@@ -14,7 +14,7 @@
       ref="treeSelect"
       v-model="innerValue"
       class="treeselect-component"
-      :options="options"
+      :options="formattedOptions"
       :normalizer="normalizer"
       v-bind="attributes"
     />
@@ -45,6 +45,27 @@
       options: {
         type: Array,
         default: () => [],
+      },
+    },
+    computed: {
+      formattedOptions () {
+        return this.formatOptions(this.options)
+      },
+    },
+    methods: {
+      formatOptions (options) {
+        return options.map(option => {
+          const formattedOption = {
+            id: option.id,
+            name: option.name,
+          }
+
+          if (option.children) {
+            formattedOption.children = this.formatOptions(option.children)
+          }
+
+          return formattedOption
+        })
       },
     },
   }
