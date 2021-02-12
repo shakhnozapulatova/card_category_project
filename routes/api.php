@@ -30,4 +30,5 @@ Route::group([
     'middleware' => 'auth:api',
 ], function () {
     Route::resource('category', \App\Http\Controllers\CategoriesController::class);
+    Route::resource('products', \App\Http\Controllers\ProductsController::class);
 });

@@ -26,6 +26,46 @@ export default {
     },
     children: [
       {
+        name: 'home',
+        path: 'home',
+        component: () => import('@/components/dashboard/pages/products/Index'),
+        meta: {
+          middleware: [
+            auth,
+          ],
+        },
+      },
+      {
+        name: 'products',
+        path: 'products',
+        component: () => import('@/components/dashboard/pages/products/Index'),
+        meta: {
+          middleware: [
+            auth,
+          ],
+        },
+      },
+      {
+        name: 'add-product',
+        path: 'add-product',
+        component: () => import('@/components/dashboard/pages/products/Create'),
+        meta: {
+          middleware: [
+            auth,
+          ],
+        },
+      },
+      {
+        name: 'update-product',
+        path: 'update-product/:id',
+        component: () => import('@/components/dashboard/pages/products/Update'),
+        meta: {
+          middleware: [
+            auth,
+          ],
+        },
+      },
+      {
         name: 'categories',
         path: 'categories',
         component: () => import('@/components/dashboard/pages/categories/Index'),

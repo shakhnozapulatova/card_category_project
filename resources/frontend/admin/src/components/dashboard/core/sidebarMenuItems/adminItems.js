@@ -21,4 +21,19 @@ export default [
       },
     ],
   },
+  {
+    icon: 'mdi-ab-testing',
+    title: 'Продукты',
+    group: '',
+    children: [
+      {
+        to: 'products',
+        title: 'Список продуктов',
+      },
+      {
+        to: 'add-category',
+        title: 'Создать продукт',
+      },
+    ],
+  },
 ]

@@ -5,12 +5,13 @@ import user from './user'
 import ui from './ui'
 import alert from './alert'
 import category from './category'
+import product from './products'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   strict: true,
   modules: {
-    ui, alert, auth, category, user,
+    ui, alert, auth, category, user, product,
   },
 })
