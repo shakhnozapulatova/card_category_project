@@ -3,7 +3,6 @@
 namespace App\Forms;
 
 use App\Enums\ProductStatus;
-use App\Models\Category;
 use App\Models\Product;
 use App\Services\HierarchicalFormatter;
 use Saodat\FormBase\Contracts\FormBuilderInterface;

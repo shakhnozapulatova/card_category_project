@@ -16,8 +16,8 @@ class CreateProductsTable extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('name')->index();
+            $table->string('old_name')->nullable()->index();
             $table->string('status')->index()->nullable();
-            $table->integer('order')->index()->default(0);
             $table->timestamps();
         });
     }

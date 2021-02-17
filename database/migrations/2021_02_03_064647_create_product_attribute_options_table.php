@@ -15,11 +15,11 @@ class CreateProductAttributeOptionsTable extends Migration
     {
         Schema::create('product_attribute_options', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('attribute_id')->constrained('product_attributes');
+            $table->string('attribute')->nullable()->index();
             $table->string('name')->index();
             $table->string('value')->nullable()->index();
             $table->integer('parent_id')->nullable()->index();
-            $table->integer('sort')->default(0)->index();
+            $table->integer('order')->default(0)->index();
             $table->timestamps();
         });
     }

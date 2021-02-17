@@ -59,7 +59,6 @@ class ProductControllerTest extends TestCase
     {
         $productData = [
             'name' => 'Create name',
-            'order' => 10
         ];
 
         $response = $this->post(route('products.store'),
@@ -84,7 +83,6 @@ class ProductControllerTest extends TestCase
                 'id',
                 'category_id',
                 'name',
-                'order'
             ]
         ]);
     }
@@ -102,7 +100,6 @@ class ProductControllerTest extends TestCase
         $this->assertDatabaseHas('products', [
             'name' => 'New name for created product',
             'status' => null,
-            'order' => 0,
             'created_at' => $this->product->created_at,
             'updated_at' => $this->product->updated_at,
         ]);
