@@ -13,8 +13,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\Product::factory(30)->create();
-
         \App\Models\ProductAttribute::factory()->create([
             'name' => 'Категория',
             'value' => 'category',
