@@ -17,7 +17,8 @@ class CreateProductAttributeOptionsTable extends Migration
             $table->id();
             $table->foreignId('attribute_id')->constrained('product_attributes');
             $table->string('name')->index();
-            $table->string('slug')->index();
+            $table->string('value')->nullable()->index();
+            $table->integer('parent_id')->nullable()->index();
             $table->integer('sort')->default(0)->index();
             $table->timestamps();
         });

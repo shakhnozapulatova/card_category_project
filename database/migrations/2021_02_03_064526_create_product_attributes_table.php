@@ -16,7 +16,7 @@ class CreateProductAttributesTable extends Migration
         Schema::create('product_attributes', function (Blueprint $table) {
             $table->id();
             $table->string('name')->index();
-            $table->string('slug')->index();
+            $table->string('value')->nullable()->index();
             $table->integer('order')->default(0)->index();
             $table->timestamps();
         });

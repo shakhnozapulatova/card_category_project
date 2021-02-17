@@ -10,7 +10,6 @@ class ProductRequest extends JsonRequest
     public function rules() : array
     {
         return [
-            'category_id' => ['required', 'integer'],
             'name' => ['required'],
             'status' => ['nullable'],
             'order' => ['nullable', 'integer']

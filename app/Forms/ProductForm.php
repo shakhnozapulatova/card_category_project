@@ -34,20 +34,10 @@ class ProductForm extends AbstractForm
                 ]);
 
 
-        $this->formBuilder->add('treeselect', 'category_id', 'Категория',
-            [
-                'options' => $this->hierarchicalFormatter->formatRecursively(Category::all()->toArray()),
-                'placeholder' => 'Категория',
-                'attributes' => [
-                    'outlined' => true,
-                    'cols' => 12
-                ],
-            ]);
-
 
         $this->formBuilder->add('select', 'status', 'Статус',
             [
-                'placeholder' => 'Категория',
+                'placeholder' => 'Статус',
                 'validationRule' => 'required',
                 'attributes' => [
                     'outlined' => true,

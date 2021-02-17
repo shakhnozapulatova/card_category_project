@@ -16,8 +16,6 @@ class ProductControllerTest extends TestCase
 
     private $token;
 
-    private $category;
-
     private $product;
 
     public function setUp(): void
@@ -28,8 +26,7 @@ class ProductControllerTest extends TestCase
 
         $this->token = auth()->tokenById($user->id);
 
-        $this->category = Category::factory()->create();
-        $this->product = Product::factory()->create(['category_id' => $this->category->id]);
+        $this->product = Product::factory()->create();
     }
 
     public function test_can_logged_in_user_view_products()
@@ -44,7 +41,6 @@ class ProductControllerTest extends TestCase
             'data' => [
                 '*' => [
                     'id',
-                    'category_id',
                     'name',
                     'order'
                 ]
@@ -62,7 +58,6 @@ class ProductControllerTest extends TestCase
     public function test_logged_in_user_can_store_product()
     {
         $productData = [
-            'category_id' => $this->category->id,
             'name' => 'Create name',
             'order' => 10
         ];
@@ -97,7 +92,7 @@ class ProductControllerTest extends TestCase
     public function test_update_by_logged_in_user()
     {
         $response = $this->put(route('products.update', $this->product->id),
-            ['name' => 'New name for created product', 'category_id' => $this->product->category_id],
+            ['name' => 'New name for created product'],
             [
                 'Authorization' => 'Bearer ' . $this->token
             ]);
@@ -108,7 +103,6 @@ class ProductControllerTest extends TestCase
             'name' => 'New name for created product',
             'status' => null,
             'order' => 0,
-            'category_id' => $this->product->category_id,
             'created_at' => $this->product->created_at,
             'updated_at' => $this->product->updated_at,
         ]);
