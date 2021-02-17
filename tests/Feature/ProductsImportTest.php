@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\Models\ProductAttribute;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -23,7 +22,7 @@ class ProductsImportTest extends TestCase
 
     public function test_products_import()
     {
-        $response = $this->post('import-products',
+        $response = $this->post(route('import.products'),
             [
                 'file_path' => public_path('products test.xlsx')
             ],

@@ -31,4 +31,5 @@ Route::group([
 ], function () {
     Route::resource('category', \App\Http\Controllers\CategoriesController::class);
     Route::resource('products', \App\Http\Controllers\ProductsController::class);
+    Route::post('import-products', [App\Http\Controllers\ProductsImportController::class, 'import'])->name('import.products');
 });

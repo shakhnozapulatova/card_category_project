@@ -17,7 +17,6 @@ Route::get('/', function () {
     return view('admin');
 });
 
-Route::post('import-products', [App\Http\Controllers\ProductsImportController::class, 'import'])->name('import.products');
 Route::get('atc-parse', function () {
     function recursivelyCreateAtx(array $data, $parentId = null)
     {

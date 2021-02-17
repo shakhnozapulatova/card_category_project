@@ -24,19 +24,19 @@ class ProductsImport implements ToCollection, WithHeadingRow
             $product->data()->createMany([
                 [
                     'name' => 'atx',
-                    'value' => $row['kod_atx']
+                    'value' => $row['kod_atx'] == 'NULL' ? null : $row['kod_atx']
                 ],
                 [
                     'name' => 'old_atx',
-                    'value' => $row['kod_atx']
+                    'value' => $row['kod_atx'] == 'NULL' ? null : $row['kod_atx']
                 ],
                 [
                     'name' => 'old_mnn',
-                    'value' => $row['mezdunarodnoe_nazvanie_mnn']
+                    'value' => $row['mezdunarodnoe_nazvanie_mnn'] == 'NULL' ? null : $row['mezdunarodnoe_nazvanie_mnn']
                 ],
                 [
                     'name' => 'mnn',
-                    'value' => $row['mezdunarodnoe_nazvanie_mnn']
+                    'value' => $row['mezdunarodnoe_nazvanie_mnn'] == 'NULL' ? null : $row['mezdunarodnoe_nazvanie_mnn']
                 ],
                 [
                     'name' => 'old_country_producer',
