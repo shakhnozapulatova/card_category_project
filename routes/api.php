@@ -31,5 +31,13 @@ Route::group([
 ], function () {
     Route::resource('category', \App\Http\Controllers\CategoriesController::class);
     Route::resource('products', \App\Http\Controllers\ProductsController::class);
-    Route::post('import-products', [App\Http\Controllers\ProductsImportController::class, 'import'])->name('import.products');
+
+    Route::post('product-data/{product}', [App\Http\Controllers\ProductDataController::class, 'store'])
+        ->name('product-data.store');
+
+    Route::put('product-data/{product}', [App\Http\Controllers\ProductDataController::class, 'update'])
+        ->name('product-data.update');
+
+    Route::post('import-products', [App\Http\Controllers\ProductsImportController::class, 'import'])
+        ->name('import.products');
 });

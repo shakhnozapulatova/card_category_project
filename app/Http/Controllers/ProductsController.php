@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\Pagination;
+use App\Enums\ProductStatus;
 use App\Forms\ProductForm;
 use App\Http\Requests\ProductRequest;
 use App\Http\Resources\ProductResource;
@@ -16,13 +17,10 @@ class ProductsController extends Controller
     {
         $perPage = $request->get('perPage', Pagination::DEFAULT_PER_PAGE);
         $products = Product::query()
-                    ->when($request->category_id, function ($query, $category_id) {
-                        $query->where('category_id', $query, $category_id);
-                    })
-                    ->when($request->name,  function ($query, $name) {
-                        $query->where('name', $query, $name);
-                    })
-                    ->paginate($perPage);
+            ->when($request->name, function ($query, $name) {
+                $query->where('name', $query, $name);
+            })
+            ->paginate($perPage);
 
         return ProductResource::collection($products);
     }
@@ -44,7 +42,7 @@ class ProductsController extends Controller
         return ProductResource::make($product);
     }
 
-    public function edit(Product $product,ProductForm $form)
+    public function edit(Product $product, ProductForm $form)
     {
         return response()->json(['form' => $form->fill($product)->get()]);
     }

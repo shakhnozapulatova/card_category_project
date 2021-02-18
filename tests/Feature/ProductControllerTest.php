@@ -68,6 +68,7 @@ class ProductControllerTest extends TestCase
             ]);
 
         $response->assertOk();
+
         $this->assertDatabaseHas('products', $productData);
     }
 
@@ -81,7 +82,6 @@ class ProductControllerTest extends TestCase
         $response->assertJsonStructure([
             'data' => [
                 'id',
-                'category_id',
                 'name',
             ]
         ]);

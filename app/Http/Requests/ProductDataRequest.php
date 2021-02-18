@@ -3,15 +3,12 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Psy\Util\Json;
 
-class ProductRequest extends JsonRequest
+class ProductDataRequest extends JsonRequest
 {
     public function rules() : array
     {
         return [
-            'name' => ['required'],
-            'status' => ['nullable'],
             'data.*' => ['nullable']
         ];
     }
