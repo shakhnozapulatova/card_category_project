@@ -46,7 +46,9 @@ class ProductControllerTest extends TestCase
                 '*' => [
                     'id',
                     'name',
-                    'order'
+                    'old_name',
+                    'created_at',
+                    'updated_at'
                 ]
             ]
         ]);
@@ -88,6 +90,9 @@ class ProductControllerTest extends TestCase
             'data' => [
                 'id',
                 'name',
+                'old_name',
+                'created_at',
+                'updated_at'
             ]
         ]);
     }
