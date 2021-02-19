@@ -17,14 +17,18 @@ class ProductControllerTest extends TestCase
     private $token;
 
     private $product;
+    /**
+     * @var \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|mixed
+     */
+    private $user;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $user = User::factory()->create();
+        $this->user = User::factory()->create();
 
-        $this->token = auth()->tokenById($user->id);
+        $this->token = auth()->tokenById($this->user->id);
 
         $this->product = Product::factory()->create();
     }
@@ -59,6 +63,7 @@ class ProductControllerTest extends TestCase
     {
         $productData = [
             'name' => 'Create name',
+            'editor_id' => $this->user->id
         ];
 
         $response = $this->post(route('products.store'),
@@ -67,7 +72,7 @@ class ProductControllerTest extends TestCase
                 'Authorization' => 'Bearer ' . $this->token
             ]);
 
-        $response->assertOk();
+        $response->assertCreated();
 
         $this->assertDatabaseHas('products', $productData);
     }
@@ -90,7 +95,7 @@ class ProductControllerTest extends TestCase
     public function test_update_by_logged_in_user()
     {
         $response = $this->put(route('products.update', $this->product->id),
-            ['name' => 'New name for created product'],
+            ['name' => 'New name for created product', 'editor_id'  => $this->user->id],
             [
                 'Authorization' => 'Bearer ' . $this->token
             ]);
