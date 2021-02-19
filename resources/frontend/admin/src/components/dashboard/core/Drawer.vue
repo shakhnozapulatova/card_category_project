@@ -18,7 +18,7 @@
     <v-list-item two-line>
       <v-list-item-content>
         <v-list-item-title class="text-uppercase font-weight-regular display-2">
-          <span class="logo-mini">E-signature</span>
+          <span class="logo-mini">OXYGoods</span>
         </v-list-item-title>
       </v-list-item-content>
     </v-list-item>
@@ -98,10 +98,6 @@
           group: '',
           title: this.user.name,
           children: [
-            {
-              to: `update-staff/${this.user.id}`,
-              title: this.$t('edit_profile'),
-            },
             {
               to: undefined,
               name: 'logout',
