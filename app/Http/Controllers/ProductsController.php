@@ -25,11 +25,11 @@ class ProductsController extends Controller
         return ProductResource::collection($products);
     }
 
-    public function store(ProductRequest $request): \Illuminate\Http\JsonResponse
+    public function store(ProductRequest $request): ProductResource
     {
-        Product::create($request->validated());
+        $product = Product::create($request->validated());
 
-        return response()->json(['message' => 'Продукт добавлен']);
+        return ProductResource::make($product);
     }
 
     public function create(ProductForm $form): \Illuminate\Http\JsonResponse
@@ -44,6 +44,7 @@ class ProductsController extends Controller
 
     public function edit(Product $product, ProductForm $form)
     {
+        $product->load('data');
         return response()->json(['form' => $form->fill($product)->get()]);
     }
 
@@ -51,7 +52,9 @@ class ProductsController extends Controller
     {
         $product->update($request->validated());
 
-        return response()->json(['message' => 'Продукт обновлен']);
+        $product->fresh();
+
+        return ProductResource::make($product);
     }
 
     public function destroy(Product $product)

@@ -11,8 +11,8 @@ class ProductRequest extends JsonRequest
     {
         return [
             'name' => ['required'],
+            'editor_id' => ['required', 'exists:users,id'],
             'status' => ['nullable'],
-            'data.*' => ['nullable']
         ];
     }
 }

@@ -4,6 +4,8 @@ namespace App\Forms;
 
 use App\Enums\ProductStatus;
 use App\Models\Product;
+use App\Models\ProductAttributeOption;
+use App\Models\User;
 use App\Services\HierarchicalFormatter;
 use Saodat\FormBase\Contracts\FormBuilderInterface;
 
@@ -28,39 +30,106 @@ class ProductForm extends AbstractForm
                     'validationRule' => 'required',
                     'attributes' => [
                         'outlined' => true,
-                        'cols' => 12
+                        'cols' => 6
+                    ],
+                ]);
+
+        $this->formBuilder
+            ->add('text', 'old_name', 'Наименование (Старое значение)',
+                [
+                    'attributes' => [
+                        'outlined' => true,
+                        'cols' => 6,
+                        'disabled' => true
                     ],
                 ]);
 
 
+        $this->formBuilder
+            ->add('treeselect', 'data.atx', 'Код АТХ',
+                [
+                    'validationRule' => 'required',
+                    'attributes' => [
+                        'outlined' => true,
+                        'cols' => 6,
 
-        $this->formBuilder->add('select', 'status', 'Статус',
-            [
-                'placeholder' => 'Статус',
-                'validationRule' => 'required',
-                'attributes' => [
-                    'outlined' => true,
-                    'cols' => 12
-                ],
-                'options' => [
-                    [
-                        'id' => ProductStatus::PENDING,
-                        'name' => 'Ожидает модерацию'
                     ],
-                    [
-                        'id' => ProductStatus::PUBLISHED,
-                        'name' => 'Опубликован'
-                    ]
-                ],
-            ]);
+                    'options' => $this->getFormattedAtxOptions()
+                ]);
 
         $this->formBuilder
-            ->add('number', 'order', 'Порядок',
+            ->add('text', 'data.old_atx', 'Код АТХ (Старое значение)',
                 [
                     'attributes' => [
                         'outlined' => true,
-                        'cols' => 12
+                        'cols' => 6,
+                        'disabled' => true
                     ],
+                ]);
+
+        $this->formBuilder
+            ->add('text', 'data.country_producer', 'Страна производитель',
+                [
+                    'validationRule' => 'required',
+                    'attributes' => [
+                        'outlined' => true,
+                        'cols' => 6,
+                    ],
+                ]);
+
+        $this->formBuilder
+            ->add('text', 'data.old_country_producer', 'Страна производитель (Старое значение)',
+                [
+                    'attributes' => [
+                        'outlined' => true,
+                        'cols' => 6,
+                        'disabled' => true
+                    ],
+                ]);
+
+        $this->formBuilder
+            ->add('text', 'data.mnn', 'МНН',
+                [
+                    'validationRule' => 'required',
+                    'attributes' => [
+                        'outlined' => true,
+                        'cols' => 6,
+                    ],
+                ]);
+
+        $this->formBuilder
+            ->add('text', 'data.old_mnn', 'МНН (Старое значение)',
+                [
+                    'attributes' => [
+                        'outlined' => true,
+                        'cols' => 6,
+                        'disabled' => true
+                    ],
+                ]);
+
+        $this->formBuilder
+            ->add('treeselect', 'data.category', 'Категория',
+                [
+                    'attributes' => [
+                        'outlined' => true,
+                        'cols' => 6
+                    ],
+                    'options' => []
+                ]);
+
+        $this->formBuilder
+            ->add('select', 'data.user_id', 'Модератор',
+                [
+                    'attributes' => [
+                        'outlined' => true,
+                        'cols' => 6,
+                    ],
+                    'options' => User::all()->map(function($user) {
+                        return [
+                          'id' => $user->id,
+                            'name' => $user->name
+                        ];
+                    })
                 ]);
     }
 
@@ -68,8 +137,30 @@ class ProductForm extends AbstractForm
     {
         foreach ($this->formBuilder->getFields() as $field) {
             $field->setValue($product->{$field->getName()});
+
+            foreach ($product->data as $productData) {
+                if ($field->getName() === 'data.' . $productData->name) {
+                    $field->setValue($productData->value);
+                }
+            }
         }
 
         return $this;
+    }
+
+    private function getFormattedAtxOptions(): array
+    {
+        $atxOptions = ProductAttributeOption::where('attribute', 'atx')
+            ->get()
+            ->map(function ($option) {
+                return [
+                    'id' => $option->id,
+                    'name' => "{$option->value} - {$option->name}",
+                    'parent_id' => $option->parent_id
+                ];
+            })
+            ->toArray();
+
+        return $this->hierarchicalFormatter->formatRecursively($atxOptions);
     }
 }
