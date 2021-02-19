@@ -6,8 +6,8 @@ export default {
     getProductList ({ commit }, params) {
       return ProductService.getResourceList(params)
     },
-    getProductById ({ commit }, id) {
-      return ProductService.getResourceList(id)
+    getProductById ({ commit }, { id, params }) {
+      return ProductService.getResourceList(id, params)
     },
     createProduct ({ commit }, data) {
       return ProductService.createResource(data)

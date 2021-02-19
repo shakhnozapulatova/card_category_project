@@ -7,20 +7,22 @@
           :key="index"
           :md="field.attributes.cols || 12"
         >
-          <component
-            :is="`${field.component}-field`"
-            :scope="scope"
-            :type="field.type"
-            :name="field.name"
-            :label="field.label"
-            :placeholder="field.placeholder"
-            :hint="field.hint"
-            :value="field.value"
-            :validation-rule="field.rule"
-            :options="field.options"
-            :attributes="field.attributes"
-            @input="updateFieldValue"
-          />
+          <slot :field-name="`${field.name}-field`" :field="field" :updateFormFiled="updateFieldValue">
+            <component
+              :is="`${field.component}-field`"
+              :scope="scope"
+              :type="field.type"
+              :name="field.name"
+              :label="field.label"
+              :placeholder="field.placeholder"
+              :hint="field.hint"
+              :value="field.value"
+              :validation-rule="field.rule"
+              :options="field.options"
+              :attributes="field.attributes"
+              @input="updateFieldValue"
+            />
+          </slot>
         </v-col>
       </v-row>
       <slot :loading="loading" name="actions">
@@ -115,6 +117,7 @@
       },
       updateFieldValue (fieldData) {
         this.setFieldValue(fieldData)
+        console.log(fieldData)
         this.$emit('input', this.fieldsValue)
       },
       setFieldValue ({ name, value }) {

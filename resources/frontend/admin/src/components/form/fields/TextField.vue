@@ -44,15 +44,5 @@
         },
       },
     },
-    watch: {
-      innerValue (newVal) {
-        debounce(() => {
-          this.$emit('input', {
-            name: this.name,
-            value: newVal,
-          })
-        }, 500)
-      },
-    },
   }
 </script>

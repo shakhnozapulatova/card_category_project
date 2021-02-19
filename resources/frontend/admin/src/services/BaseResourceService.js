@@ -20,11 +20,12 @@ export class BaseResourceService {
     return Http.delete(url, {}, authConfig())
   }
 
-  static getResourceById (id) {
-    return Http.get(id)
+  static getResourceById (id, params = {}) {
+    const url = this.entity + '/' + id
+    return Http.get(this.entity, params, authConfig())
   }
 
-  static getResourceList (params = {}) {
+  static getResourceList (id, params) {
     return Http.get(this.entity, params, authConfig())
   }
 

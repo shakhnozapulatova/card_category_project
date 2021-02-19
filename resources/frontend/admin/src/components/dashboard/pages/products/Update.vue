@@ -22,8 +22,8 @@
 </template>
 
 <script>
-  import FormBase from '@/components/form/FormBase'
 
+  import FormBase from '@/components/form/FormBase'
   import { mapActions, mapGetters, mapMutations } from 'vuex'
   export default {
     name: 'Update',
@@ -36,6 +36,9 @@
         formValue: '',
         loading: false,
         id: '',
+        atx: {
+          value: '',
+        },
       }
     },
     created () {
@@ -47,15 +50,20 @@
         })
     },
     methods: {
-      ...mapActions('product', ['getProductUpdateForm', 'updateProduct']),
+      ...mapActions('product', ['getProductUpdateForm', 'getProductById', 'updateProduct']),
+      ...mapActions('productData', ['createProductData']),
       ...mapMutations('alert', ['successMessage', 'errorMessage']),
       create () {
         this.loading = true
         this.updateProduct({ id: this.id, data: this.formValue })
-          .then(() => {
-            this.$router.push({ name: 'products' })
-            this.successMessage('Продукт обновлен')
-            this.loading = false
+          .then(({ data }) => {
+            const { id } = data.data
+            this.createProductData({ id, data: this.formValue })
+              .then(() => {
+                this.successMessage('Продукт обновлен')
+                this.loading = false
+                // this.$router.push({ name: 'products' })
+              })
           })
           .catch((error) => {
             this.errorMessage(error)

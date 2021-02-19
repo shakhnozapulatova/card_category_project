@@ -40,16 +40,12 @@
         action: 'product/getProductList',
         headers: [
           {
-            text: 'Идентификатор',
-            value: 'id',
-          },
-          {
             text: 'Название',
             value: 'name',
           },
           {
-            text: 'Идентификатор категории',
-            value: 'slug',
+            text: 'Старое название',
+            value: 'old_name',
           },
           {
             text: 'Порядок',
