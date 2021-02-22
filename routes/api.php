@@ -30,7 +30,9 @@ Route::group([
     'middleware' => 'auth:api',
 ], function () {
     Route::resource('category', \App\Http\Controllers\CategoriesController::class);
-    Route::resource('products', \App\Http\Controllers\ProductsController::class);
+    Route::resource('products', \App\Http\Controllers\ProductsController::class);\
+    Route::resource('product-attributes-option', \App\Http\Controllers\AttributeOptionsController::class)
+        ->only( 'index');
 
     Route::post('product-data/{product}', [App\Http\Controllers\ProductDataController::class, 'store'])
         ->name('product-data.store');

@@ -13,7 +13,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\ProductAttribute::factory()->create([
+        \App\Models\Attribute::factory()->create([
             'name' => 'Категория',
             'value' => 'category',
         ]);
@@ -24,35 +24,34 @@ class DatabaseSeeder extends Seeder
             'email' => 'admin@gmail.com'
         ]);
 
-        \App\Models\ProductAttribute::factory()->create([
+        \App\Models\Attribute::factory()->create([
             'name' => 'Код ATX',
             'value' => 'atx',
         ]);
 
-        \App\Models\ProductAttribute::factory()->create([
+        \App\Models\Attribute::factory()->create([
             'name' => 'Код ATX (старое значение)',
             'value' => 'old_atx',
         ]);
 
-        \App\Models\ProductAttribute::factory()->create([
+        \App\Models\Attribute::factory()->create([
             'name' => 'Страна Производитель',
             'value' => 'country_producer',
         ]);
 
-        \App\Models\ProductAttribute::factory()->create([
+        \App\Models\Attribute::factory()->create([
             'name' => 'Страна Производитель (старое значение)',
             'value' => 'old_country_producer',
         ]);
 
-        \App\Models\ProductAttribute::factory()->create([
+        \App\Models\Attribute::factory()->create([
             'name' => 'МНН',
             'value' => 'mnn',
         ]);
 
-        \App\Models\ProductAttribute::factory()->create([
+        \App\Models\Attribute::factory()->create([
             'name' => 'МНН (старое значение)',
             'value' => 'old_mnn',
         ]);
-
     }
 }

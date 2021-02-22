@@ -2,17 +2,17 @@
 
 namespace Database\Factories;
 
-use App\Models\ProductAttribute;
+use App\Models\AttributeOption;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class ProductAttributeFactory extends Factory
+class AttributeOptionFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = ProductAttribute::class;
+    protected $model = AttributeOption::class;
 
     /**
      * Define the model's default state.
@@ -23,7 +23,8 @@ class ProductAttributeFactory extends Factory
     {
         return [
             'name' => $this->faker->name,
-            'value' => $this->faker->slug
+            'value' => $this->faker->slug,
+            'parent_id' => $this->faker->randomNumber(1)
         ];
     }
 }

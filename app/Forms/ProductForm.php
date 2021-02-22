@@ -2,9 +2,8 @@
 
 namespace App\Forms;
 
-use App\Enums\ProductStatus;
+use App\Models\AttributeOption;
 use App\Models\Product;
-use App\Models\ProductAttributeOption;
 use App\Models\User;
 use App\Services\HierarchicalFormatter;
 use Saodat\FormBase\Contracts\FormBuilderInterface;
@@ -150,7 +149,7 @@ class ProductForm extends AbstractForm
 
     private function getFormattedAtxOptions(): array
     {
-        $atxOptions = ProductAttributeOption::where('attribute', 'atx')
+        $atxOptions = AttributeOption::where('attribute', 'atx')
             ->get()
             ->map(function ($option) {
                 return [
