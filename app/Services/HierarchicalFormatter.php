@@ -6,7 +6,7 @@ namespace App\Services;
 
 use App\Exceptions\HierarchicalFormatterException;
 
-class HierarchicalFormatter
+final class HierarchicalFormatter
 {
     /**
      * @param array $flattenList

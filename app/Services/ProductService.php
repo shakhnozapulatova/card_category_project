@@ -7,7 +7,7 @@ namespace App\Services;
 use App\DataTransferObjects\ProductDto;
 use App\Models\Product;
 
-class ProductService
+final class ProductService
 {
     /**
      * @param ProductDto $dto
