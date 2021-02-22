@@ -13,6 +13,7 @@ class ProductResource extends JsonResource
             'name' => $this->name,
             'editor' => $this->whenLoaded('editor'),
             'old_name' => $this->old_name,
+            'data' => ProductDataResource::collection($this->whenLoaded('data')),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at
         ];

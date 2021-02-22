@@ -3,12 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Enums\Pagination;
-use App\Enums\ProductStatus;
 use App\Forms\ProductForm;
 use App\Http\Requests\ProductRequest;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
-use App\Models\User;
+use App\Services\ProductService;
 use Illuminate\Http\Request;
 
 class ProductsController extends Controller
@@ -16,18 +15,20 @@ class ProductsController extends Controller
     public function index(Request $request): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
         $perPage = $request->get('perPage', Pagination::DEFAULT_PER_PAGE);
-        $products = Product::query()
-            ->when($request->name, function ($query, $name) {
-                $query->where('name', $query, $name);
-            })
+
+        $query = $request->with ? Product::with($request->with) : Product::query();
+
+        $products = $query->when($request->name, function ($query, $name) {
+            $query->where('name', $query, $name);
+        })
             ->paginate($perPage);
 
         return ProductResource::collection($products);
     }
 
-    public function store(ProductRequest $request): ProductResource
+    public function store(ProductService $service, ProductRequest $request): ProductResource
     {
-        $product = Product::create($request->validated());
+        $product = $service->create($request->getDto());
 
         return ProductResource::make($product);
     }
@@ -39,25 +40,32 @@ class ProductsController extends Controller
 
     public function show(Product $product): ProductResource
     {
+        if ($with = \request()->with) {
+            $product->load($with);
+        }
+
         return ProductResource::make($product);
     }
 
-    public function edit(Product $product, ProductForm $form)
+    public function edit(Product $product, ProductForm $form): \Illuminate\Http\JsonResponse
     {
         $product->load('data');
         return response()->json(['form' => $form->fill($product)->get()]);
     }
 
-    public function update(ProductRequest $request, Product $product)
+    public function update(int $id, ProductService $service,ProductRequest $request): ProductResource
     {
-        $product->update($request->validated());
-
-        $product->fresh();
+        $product = $service->update($id, $request->getDto());
 
         return ProductResource::make($product);
     }
 
-    public function destroy(Product $product)
+    /**
+     * @param Product $product
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
+     */
+    public function destroy(Product $product): \Illuminate\Http\JsonResponse
     {
         $product->delete();
 

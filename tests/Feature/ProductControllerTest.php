@@ -65,7 +65,8 @@ class ProductControllerTest extends TestCase
     {
         $productData = [
             'name' => 'Create name',
-            'editor_id' => $this->user->id
+            'editor_id' => $this->user->id,
+            'status' => 'draft'
         ];
 
         $response = $this->post(route('products.store'),
@@ -100,7 +101,11 @@ class ProductControllerTest extends TestCase
     public function test_update_by_logged_in_user()
     {
         $response = $this->put(route('products.update', $this->product->id),
-            ['name' => 'New name for created product', 'editor_id'  => $this->user->id],
+            [
+                'name' => 'New name for created product',
+                'editor_id'  => $this->user->id,
+                'status' => 'pending'
+            ],
             [
                 'Authorization' => 'Bearer ' . $this->token
             ]);
@@ -109,7 +114,8 @@ class ProductControllerTest extends TestCase
 
         $this->assertDatabaseHas('products', [
             'name' => 'New name for created product',
-            'status' => null,
+            'editor_id'  => $this->user->id,
+            'status' => 'pending',
             'created_at' => $this->product->created_at,
             'updated_at' => $this->product->updated_at,
         ]);
