@@ -4,7 +4,7 @@
 namespace App\DataTransferObjects;
 
 
-class ProductDto
+final class ProductDto
 {
     private $name;
 
