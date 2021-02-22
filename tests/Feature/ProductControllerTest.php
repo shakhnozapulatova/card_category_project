@@ -2,12 +2,11 @@
 
 namespace Tests\Feature;
 
-use App\Models\Category;
+use App\Enums\ProductStatus;
 use App\Models\Product;
 use App\Models\User;
-use Database\Factories\ProductFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Tests\TestCase;
 
 class ProductControllerTest extends TestCase
@@ -33,7 +32,7 @@ class ProductControllerTest extends TestCase
         $this->product = Product::factory()->create();
     }
 
-    public function test_can_logged_in_user_view_products()
+    public function test_can_editor_view_products()
     {
         $response = $this->get(route('products.index'), [
             'Authorization' => 'Bearer ' . $this->token
@@ -61,26 +60,7 @@ class ProductControllerTest extends TestCase
         $response->assertUnauthorized();
     }
 
-    public function test_logged_in_user_can_store_product()
-    {
-        $productData = [
-            'name' => 'Create name',
-            'editor_id' => $this->user->id,
-            'status' => 'draft'
-        ];
-
-        $response = $this->post(route('products.store'),
-            $productData,
-            [
-                'Authorization' => 'Bearer ' . $this->token
-            ]);
-
-        $response->assertCreated();
-
-        $this->assertDatabaseHas('products', $productData);
-    }
-
-    public function test_show_logged_in_user_product()
+    public function test_editor_can_view_single_product()
     {
         $response = $this->get(route('products.show', $this->product->id),
             [
@@ -98,13 +78,11 @@ class ProductControllerTest extends TestCase
         ]);
     }
 
-    public function test_update_by_logged_in_user()
+    public function test_editor_can_update_product_name()
     {
         $response = $this->put(route('products.update', $this->product->id),
             [
                 'name' => 'New name for created product',
-                'editor_id'  => $this->user->id,
-                'status' => 'pending'
             ],
             [
                 'Authorization' => 'Bearer ' . $this->token
@@ -114,24 +92,37 @@ class ProductControllerTest extends TestCase
 
         $this->assertDatabaseHas('products', [
             'name' => 'New name for created product',
-            'editor_id'  => $this->user->id,
-            'status' => 'pending',
+            'editor_id'  => null,
+            'status' => ProductStatus::DRAFT,
             'created_at' => $this->product->created_at,
             'updated_at' => $this->product->updated_at,
         ]);
     }
 
-    public function test_delete_by_logged_in_user()
+    public function test_editor_create_product()
     {
-        $response = $this->delete(route('products.destroy', $this->product->id),
+        $this->expectException(RouteNotFoundException::class);
+
+        $this->delete(route('products.store'),
+            [
+                'name' => 'Create name'
+            ],
+            [
+                'Authorization' => 'Bearer ' . $this->token
+            ]);
+
+    }
+
+    public function test_editor_cant_delete_product()
+    {
+        $this->expectException(RouteNotFoundException::class);
+
+        $this->delete(route('products.destroy', $this->product->id),
             [],
             [
                 'Authorization' => 'Bearer ' . $this->token
             ]);
 
-        $response->assertOk();
-
-        $this->assertDatabaseMissing('products', $this->product->toArray());
     }
 
     public function test_create_product_form()

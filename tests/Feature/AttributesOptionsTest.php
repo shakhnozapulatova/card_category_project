@@ -7,7 +7,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Feature\Traits\CreateUser;
 use Tests\TestCase;
 
-class AttriubtesOptionsTest extends TestCase
+class AttributesOptionsTest extends TestCase
 {
     use RefreshDatabase;
     use CreateUser;

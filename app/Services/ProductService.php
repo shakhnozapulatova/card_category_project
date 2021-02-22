@@ -15,11 +15,12 @@ class ProductService
      */
     public function create(ProductDto $dto)
     {
+        // Todo remove old name column
         return Product::create([
-            'name' => $dto->name,
-            'old_name' => $dto->name,
-            'editor_id' => $dto->editor_id,
-            'status' => $dto->status,
+            'name' => $dto->getName(),
+            'old_name' => $dto->getName(),
+            'editor_id' => $dto->getEditorId(),
+            'status' => $dto->getStatus(),
         ]);
     }
 
@@ -33,13 +34,18 @@ class ProductService
         $product = Product::findOrFail($id);
 
         $product->update([
-            'name' => $dto->name,
-            'editor_id' => $dto->editor_id,
-            'status' => $dto->status,
+            'name' => $dto->getName(),
+            'editor_id' => $dto->getEditorId(),
+            'status' => $dto->getStatus(),
         ]);
 
         $product->fresh();
 
         return $product;
+    }
+
+    public function delete(int $id): int
+    {
+        return Product::destroy($id);
     }
 }

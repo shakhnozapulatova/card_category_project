@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\Pagination;
 use App\Forms\ProductForm;
-use App\Http\Requests\ProductRequest;
+use App\Http\Requests\ProductUpdateRequest;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use App\Services\ProductService;
@@ -26,12 +26,6 @@ class ProductsController extends Controller
         return ProductResource::collection($products);
     }
 
-    public function store(ProductService $service, ProductRequest $request): ProductResource
-    {
-        $product = $service->create($request->getDto());
-
-        return ProductResource::make($product);
-    }
 
     public function create(ProductForm $form): \Illuminate\Http\JsonResponse
     {
@@ -53,7 +47,7 @@ class ProductsController extends Controller
         return response()->json(['form' => $form->fill($product)->get()]);
     }
 
-    public function update(int $id, ProductService $service,ProductRequest $request): ProductResource
+    public function update(int $id, ProductService $service,ProductUpdateRequest $request): ProductResource
     {
         $product = $service->update($id, $request->getDto());
 

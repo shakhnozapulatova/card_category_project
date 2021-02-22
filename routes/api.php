@@ -25,12 +25,22 @@ Route::group([
     Route::post('me', 'AuthController@me');
 });
 
+Route::group([
+    'middleware' => 'auth:api',
+    'prefix' => 'admin',
+], function () {
+    Route::apiResource('products', \App\Http\Controllers\Admin\ProductsController::class, [
+        'as' => 'admin'
+    ])
+        ->except('store');
+});
 
 Route::group([
     'middleware' => 'auth:api',
 ], function () {
-    Route::resource('category', \App\Http\Controllers\CategoriesController::class);
-    Route::resource('products', \App\Http\Controllers\ProductsController::class);\
+    Route::resource('products', \App\Http\Controllers\ProductsController::class)
+        ->except('store', 'destroy');
+
     Route::resource('product-attributes-option', \App\Http\Controllers\AttributeOptionsController::class)
         ->only( 'index');
 

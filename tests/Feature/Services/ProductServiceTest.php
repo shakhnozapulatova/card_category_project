@@ -1,6 +1,7 @@
 <?php
 
 namespace Tests\Feature\Services;
+
 use App\DataTransferObjects\ProductDto;
 use App\Models\Product;
 use App\Services\ProductService;
@@ -11,6 +12,7 @@ use Tests\TestCase;
 class ProductServiceTest extends TestCase
 {
     use RefreshDatabase;
+
     /**
      * A basic feature test example.
      *
@@ -22,7 +24,7 @@ class ProductServiceTest extends TestCase
      */
     private $productService;
 
-    public function setUp() : void
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -33,8 +35,8 @@ class ProductServiceTest extends TestCase
     {
         $dto = new ProductDto(
             'Product name',
-            1,
-            'status'
+            'status',
+            1
         );
 
         $product = $this->productService->create($dto);
@@ -55,8 +57,8 @@ class ProductServiceTest extends TestCase
 
         $dto = new ProductDto(
             $updatedData['name'],
-            $updatedData['editor_id'],
-            $updatedData['status']
+            $updatedData['status'],
+            $updatedData['editor_id']
         );
 
         $this->productService->update($product->id, $dto);
@@ -69,8 +71,8 @@ class ProductServiceTest extends TestCase
     {
         $dto = new ProductDto(
             'Product name',
-            1,
-            'status'
+            'status',
+            1
         );
 
         $this->expectException(ModelNotFoundException::class);
