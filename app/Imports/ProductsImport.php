@@ -6,9 +6,10 @@ use App\Enums\ProductStatus;
 use App\Models\Product;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class ProductsImport implements ToCollection, WithHeadingRow
+class ProductsImport implements ToCollection, WithHeadingRow, WithChunkReading
 {
     public function collection(Collection $rows)
     {
@@ -17,14 +18,17 @@ class ProductsImport implements ToCollection, WithHeadingRow
             $product = Product::create([
                 'id' => $row['goodid'],
                 'name' => $row['good'],
-                'old_name' => $row['good'],
-                'status' => ProductStatus::PENDING,
+                'status' => ProductStatus::DRAFT,
             ]);
 
             $product->data()->createMany([
                 [
                     'name' => 'atx',
                     'value' => $row['kod_atx'] == 'NULL' ? null : $row['kod_atx']
+                ],
+                [
+                    'name' => 'old_name',
+                    'value' => $row['good'] == 'NULL' ? null : $row['kod_atx']
                 ],
                 [
                     'name' => 'old_atx',
@@ -48,5 +52,10 @@ class ProductsImport implements ToCollection, WithHeadingRow
                 ],
             ]);
         }
+    }
+
+    public function chunkSize(): int
+    {
+        return 500;
     }
 }

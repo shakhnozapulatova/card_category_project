@@ -15,10 +15,8 @@ final class ProductService
      */
     public function create(ProductDto $dto)
     {
-        // Todo remove old name column
         return Product::create([
             'name' => $dto->getName(),
-            'old_name' => $dto->getName(),
             'editor_id' => $dto->getEditorId(),
             'status' => $dto->getStatus(),
         ]);
