@@ -6,6 +6,7 @@ use App\Enums\Pagination;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\ProductUpdateRequest as AdminUpdateProductsRequest;
 use App\Http\Resources\ProductResource;
+use App\Models\Product;
 use App\Services\ProductService;
 use Illuminate\Http\Request;
 
@@ -30,9 +31,11 @@ class ProductsController extends Controller
         //
     }
 
-    public function update(int $id, AdminUpdateProductsRequest $request, ProductService $service): ProductResource
+    public function update(Product $product, AdminUpdateProductsRequest $request, ProductService $service): ProductResource
     {
-        $product = $service->update($id, $request->getDto());
+        $this->authorize('update', $product);
+
+        $product = $service->update($product->id, $request->getDto());
 
         return ProductResource::make($product);
     }

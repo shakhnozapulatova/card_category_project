@@ -18,12 +18,6 @@ class DatabaseSeeder extends Seeder
             'value' => 'category',
         ]);
 
-        \App\Models\User::factory()->create([
-            'name' => 'admin',
-            'password' => bcrypt('qwerty123'),
-            'email' => 'admin@gmail.com'
-        ]);
-
         \App\Models\Attribute::factory()->create([
             'name' => 'Код ATX',
             'value' => 'atx',

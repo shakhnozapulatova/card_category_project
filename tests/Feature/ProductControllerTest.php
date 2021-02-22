@@ -5,7 +5,9 @@ namespace Tests\Feature;
 use App\Enums\ProductStatus;
 use App\Models\Product;
 use App\Models\User;
+use Database\Seeders\RolesAndPermissionsSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Spatie\Permission\Models\Role;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Tests\TestCase;
 
@@ -25,11 +27,20 @@ class ProductControllerTest extends TestCase
     {
         parent::setUp();
 
+        $role = Role::create([
+            'name' => 'editor',
+            'guard_name' => 'api'
+        ]);
+
         $this->user = User::factory()->create();
+
+        $this->user->assignRole($role);
 
         $this->token = auth()->tokenById($this->user->id);
 
-        $this->product = Product::factory()->create();
+        $this->product = Product::factory()->create([
+            'editor_id' => $this->user->id
+        ]);
     }
 
     public function test_can_editor_view_products()
@@ -123,17 +134,6 @@ class ProductControllerTest extends TestCase
                 'Authorization' => 'Bearer ' . $this->token
             ]);
 
-    }
-
-    public function test_create_product_form()
-    {
-        $response = $this->get(route('products.create'),
-            [
-                'Authorization' => 'Bearer ' . $this->token
-            ]);
-
-        $response->assertOk();
-        $response->assertJsonStructure(['form']);
     }
 
     public function test_edit_product_form()

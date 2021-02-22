@@ -39,7 +39,7 @@ Route::group([
     'middleware' => 'auth:api',
 ], function () {
     Route::resource('products', \App\Http\Controllers\ProductsController::class)
-        ->except('store', 'destroy');
+        ->except('store', 'destroy', 'create');
 
     Route::resource('product-attributes-option', \App\Http\Controllers\AttributeOptionsController::class)
         ->only( 'index');

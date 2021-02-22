@@ -14,7 +14,7 @@ class UserService
         return User::create([
             'name' => $dto->getName(),
             'email' => $dto->getEmail(),
-            'password' => $dto->getPassword()
+            'password' => bcrypt($dto->getPassword())
         ]);
     }
 

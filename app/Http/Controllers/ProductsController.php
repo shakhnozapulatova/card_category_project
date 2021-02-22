@@ -27,13 +27,10 @@ class ProductsController extends Controller
     }
 
 
-    public function create(ProductForm $form): \Illuminate\Http\JsonResponse
-    {
-        return response()->json(['form' => $form->get()]);
-    }
-
     public function show(Product $product): ProductResource
     {
+        $this->authorize('view', $product);
+
         if ($with = \request()->with) {
             $product->load($with);
         }
@@ -47,22 +44,12 @@ class ProductsController extends Controller
         return response()->json(['form' => $form->fill($product)->get()]);
     }
 
-    public function update(int $id, ProductService $service,ProductUpdateRequest $request): ProductResource
+    public function update(Product $product, ProductService $service,ProductUpdateRequest $request): ProductResource
     {
-        $product = $service->update($id, $request->getDto());
+        $this->authorize('update', $product);
+
+        $product = $service->update($product->id, $request->getDto());
 
         return ProductResource::make($product);
-    }
-
-    /**
-     * @param Product $product
-     * @return \Illuminate\Http\JsonResponse
-     * @throws \Exception
-     */
-    public function destroy(Product $product): \Illuminate\Http\JsonResponse
-    {
-        $product->delete();
-
-        return response()->json(['message' => 'Продукт удален']);
     }
 }

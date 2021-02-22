@@ -6,6 +6,7 @@ use App\Enums\ProductStatus;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Spatie\Permission\Models\Role;
 use Tests\Feature\Traits\CreateUser;
 use Tests\TestCase;
 
@@ -20,14 +21,22 @@ class AdminProductControllerTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+
         $this->product = Product::factory()->create([
             'status' => ProductStatus::DRAFT,
             'editor_id' => null
         ]);
 
-        $this->createUser();
+        $role = Role::create([
+            'name' => 'admin',
+            'guard_name' => 'api'
+        ]);
 
         $this->user = User::factory()->create();
+
+        $this->user->assignRole($role);
+
+        $this->token = auth()->tokenById($this->user->id);
     }
 
     public function updateProductRequest(array $data): \Illuminate\Testing\TestResponse
