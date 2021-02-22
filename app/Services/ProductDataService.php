@@ -4,9 +4,10 @@
 namespace App\Services;
 
 
+use App\DataTransferObjects\ProductDataDto;
 use App\Models\Product;
 
-class ProductDataService
+final class ProductDataService
 {
     /**
      * @param Product $product
@@ -17,21 +18,48 @@ class ProductDataService
         return $product->data()->delete();
     }
 
-    public function saveData(Product $product, array $data): \Illuminate\Database\Eloquent\Collection
+    /**
+     * @param Product $product
+     * @param ProductDataDto[] $dtos
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function create(Product $product, array $dtos): \Illuminate\Database\Eloquent\Collection
     {
-        $data = $this->formatData($data);
+        $data = $this->formatData($dtos);
+
         return $product->data()->createMany($data);
     }
 
-    private function formatData(array $data): array
+    /**
+     * @param Product $product
+     * @param ProductDataDto[] $dtos
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function update(Product $product, array $dtos): \Illuminate\Database\Eloquent\Collection
     {
-        return collect($data)->map(function ($value, $key) {
-            return [
-                'name' => $key,
-                'value' => $value
+        $this->deleteData($product);
+
+        return $this->create($product, $dtos);
+    }
+    /**
+     * @param ProductDataDto[] $dtos
+     * @return array
+     */
+    private function formatData(array $dtos): array
+    {
+        $result = [];
+
+        if (empty($dtos)) {
+            return $result;
+        }
+
+        foreach ($dtos as $dto) {
+            $result[] = [
+                'name' => $dto->getName(),
+                'value' => $dto->getValue()
             ];
-        })
-            ->values()
-            ->toArray();
+        }
+
+        return $result;
     }
 }

@@ -20,15 +20,14 @@ class ProductDataController extends Controller
 
     public function store(Product $product, ProductDataRequest $request): \Illuminate\Http\JsonResponse
     {
-        $this->productDataService->saveData($product, $request->validated()['data']);
+        $this->productDataService->create($product, $request->getDto());
 
         return response()->json([], 201);
     }
 
     public function update(Product $product, ProductDataRequest $request): \Illuminate\Http\JsonResponse
     {
-        $this->productDataService->deleteData($product);
-        $this->productDataService->saveData($product, $request->validated()['data']);
+        $this->productDataService->update($product, $request->getDto());
 
         return response()->json([]);
     }

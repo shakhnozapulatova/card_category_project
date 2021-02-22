@@ -117,7 +117,6 @@
       },
       updateFieldValue (fieldData) {
         this.setFieldValue(fieldData)
-        console.log(fieldData)
         this.$emit('input', this.fieldsValue)
       },
       setFieldValue ({ name, value }) {

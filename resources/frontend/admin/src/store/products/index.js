@@ -1,10 +1,11 @@
 import { ProductService } from '@/services/ProductService'
+import HttpService from '@/services/HttpService'
 
 export default {
   namespaced: true,
   actions: {
     getProductList ({ commit }, params) {
-      return ProductService.getResourceList(params)
+      return HttpService.get('products', params)
     },
     getProductById ({ commit }, { id, params }) {
       return ProductService.getResourceList(id, params)

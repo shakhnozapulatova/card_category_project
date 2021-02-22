@@ -77,6 +77,10 @@
         type: String,
         required: true,
       },
+      params: {
+        type: Object,
+        default: () => ({}),
+      },
       headers: {
         type: Array,
         default: () => ([]),
@@ -121,6 +125,7 @@
 
         this.$store.dispatch(this.action, {
           ...this.searchOptions,
+          ...this.params,
           perPage: itemsPerPage === -1 ? 10000000 : itemsPerPage,
           page: page,
           orderBy: sortBy ? sortBy[0] : null,

@@ -35,7 +35,7 @@ class ProductDataControllerTest extends TestCase
         );
     }
 
-    public function test_store_product_data()
+    public function test_store_product_meta_data()
     {
         $response = $this->makeRequest('post', route('product-data.store', $this->product->id), [
             'data' => [
@@ -51,7 +51,7 @@ class ProductDataControllerTest extends TestCase
         $this->assertDatabaseCount('product_data', 4);
     }
 
-    public function test_update_product_data()
+    public function test_update_product_meta_data()
     {
         $response = $this->makeRequest('put', route('product-data.update', $this->product->id), [
             'data' => [
