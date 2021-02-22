@@ -1,17 +1,19 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Admin;
 
 use App\DataTransferObjects\ProductDto;
+use App\Enums\ProductStatus;
+use App\Http\Requests\JsonRequest;
 
-class ProductRequest extends JsonRequest
+class ProductUpdateRequest extends JsonRequest
 {
     public function rules(): array
     {
         return [
             'name' => ['required'],
-            'editor_id' => ['required', 'exists:users,id'],
-            'status' => ['nullable'],
+            'status' => ['nullable', 'in:' . implode(',', ProductStatus::getStatuses()),],
+            'editor_id' => ['nullable', 'integer']
         ];
     }
 
@@ -19,8 +21,8 @@ class ProductRequest extends JsonRequest
     {
         return new ProductDto(
             $this->get('name'),
+            $this->get('status'),
             $this->get('editor_id'),
-            $this->get('status')
         );
     }
 }

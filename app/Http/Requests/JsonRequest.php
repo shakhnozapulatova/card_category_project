@@ -24,4 +24,6 @@ abstract class JsonRequest extends FormRequest
             response()->json($validator->errors(), 422)
         );
     }
+
+    abstract public function getDto();
 }

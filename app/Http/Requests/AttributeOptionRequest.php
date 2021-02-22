@@ -12,4 +12,9 @@ class AttributeOptionRequest extends JsonRequest
             'attribute' => ['required', 'string'],
         ];
     }
+
+    public function getDto()
+    {
+        // TODO: Implement getDto() method.
+    }
 }
