@@ -23,12 +23,12 @@ class ProductsImport implements ToCollection, WithHeadingRow, WithChunkReading
 
             $product->data()->createMany([
                 [
-                    'name' => 'atx',
-                    'value' => $row['kod_atx'] == 'NULL' ? null : $row['kod_atx']
+                    'name' => 'old_name',
+                    'value' => $row['good'] == 'NULL' ? null : $row['good']
                 ],
                 [
-                    'name' => 'old_name',
-                    'value' => $row['good'] == 'NULL' ? null : $row['kod_atx']
+                    'name' => 'atx',
+                    'value' => $row['kod_atx'] == 'NULL' ? null : $row['kod_atx']
                 ],
                 [
                     'name' => 'old_atx',
