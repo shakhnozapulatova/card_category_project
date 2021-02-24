@@ -34,6 +34,6 @@ class ProductsImportTest extends TestCase
         $response->assertOk();
         $response->assertSee('Import finished');
         $this->assertDatabaseCount('products', 2);
-        $this->assertDatabaseCount('product_data', 12);
+        $this->assertDatabaseCount('product_data', 14);
     }
 }

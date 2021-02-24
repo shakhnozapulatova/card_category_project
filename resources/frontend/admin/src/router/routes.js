@@ -66,36 +66,6 @@ export default {
         },
       },
       {
-        name: 'categories',
-        path: 'categories',
-        component: () => import('@/components/dashboard/pages/categories/Index'),
-        meta: {
-          middleware: [
-            auth,
-          ],
-        },
-      },
-      {
-        name: 'add-category',
-        path: 'add-category',
-        component: () => import('@/components/dashboard/pages/categories/Create'),
-        meta: {
-          middleware: [
-            auth,
-          ],
-        },
-      },
-      {
-        name: 'update-category',
-        path: 'update-category/:id',
-        component: () => import('@/components/dashboard/pages/categories/Update'),
-        meta: {
-          middleware: [
-            auth,
-          ],
-        },
-      },
-      {
         name: 'users',
         path: 'users',
         component: () => import('@/components/dashboard/pages/users/Index'),

@@ -2,35 +2,21 @@
   <v-container>
     <v-card>
       <data-table :action="action" :headers="headers" :params="params">
-        <template v-slot:item.editor="{ item }">
+        <template v-slot:item.editor.name="{ item }">
           <tr>
-            <td>{{ item.editor ? item.editor.name : 'Отсутствует ' }}</td>
-          </tr>
-        </template>
-        <template v-slot:item.atx="{ item }">
-          <tr>
-            <td>{{ findDataObjectByValue(item,'atx').value }}</td>
-          </tr>
-        </template>
-        <template v-slot:item.mnn="{ item }">
-          <tr>
-            <td>{{ findDataObjectByValue(item,'mnn').value }}</td>
-          </tr>
-        </template>
-        <template v-slot:item.producer="{ item }">
-          <tr>
-            <td>{{ findDataObjectByValue(item,'country_producer').value }}</td>
-          </tr>
-        </template>
-        <template v-slot:item.category="{ item }">
-          <tr>
-            <td>
-              Категория
-              <!--              {{ findDataObjectByValue(item,'category').value }}-->
-            </td>
+            <td>{{ item.editor ? item.editor : 'Отсутствует' }}</td>
           </tr>
         </template>
         <template v-slot:item.actions="{ item }">
+          <v-btn
+            class="px-2 ml-1"
+            color="blue"
+            min-width="0"
+            small
+            @click="viewFullProductInfo(item)"
+          >
+            <v-icon small color="white" v-text="'mdi-eye'" />
+          </v-btn>
           <v-btn
             class="px-2 ml-1"
             color="success"
@@ -52,16 +38,22 @@
         </template>
       </data-table>
     </v-card>
+    <v-dialog v-model="dialog" max-width="768">
+      <single-product-info :product="currentProduct" />
+    </v-dialog>
   </v-container>
 </template>
 
 <script>
   import DataTable from '@/components/dashboard/DataTable'
   import { mapActions, mapGetters, mapMutations } from 'vuex'
+  import headers from '@/components/dashboard/pages/products/tableHeaders'
+  import SingleProductInfo from '@/components/dashboard/pages/products/SingleProductInfo'
+
   export default {
     name: 'Index',
     components: {
-      DataTable,
+      DataTable, SingleProductInfo,
     },
     data () {
       return {
@@ -69,44 +61,12 @@
         params: {
           with: ['editor', 'data'],
         },
-        headers: [
-          {
-            text: 'Название',
-            value: 'name',
-          },
-          {
-            text: 'Модератор',
-            value: 'editor',
-          },
-          {
-            sortable: false,
-            text: 'Код АТХ',
-            value: 'atx',
-          },
-          {
-            sortable: false,
-            text: 'МНН',
-            value: 'mnn',
-          },
-          {
-            sortable: false,
-            text: 'Производитель',
-            value: 'producer',
-          },
-          {
-            sortable: false,
-            text: 'Категория 5',
-            value: 'category',
-          },
-          {
-            sortable: false,
-            text: 'Действия',
-            value: 'actions',
-          },
-        ],
+        headers,
         searchParams: {
           qs: '',
         },
+        currentProduct: {},
+        dialog: false,
       }
     },
     computed: {
@@ -135,8 +95,9 @@
           },
         })
       },
-      findDataObjectByValue (item, value) {
-        return item.data.find((data) => data.name === value)
+      viewFullProductInfo (item) {
+        this.currentProduct = item
+        this.dialog = true
       },
     },
   }
