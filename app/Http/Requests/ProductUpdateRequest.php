@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\DataTransferObjects\ProductDto;
 use App\Enums\ProductStatus;
+use App\Rules\CanUserMakeStatusPublishedRule;
 
 class ProductUpdateRequest extends JsonRequest
 {
@@ -11,6 +12,12 @@ class ProductUpdateRequest extends JsonRequest
     {
         return [
             'name' => ['required'],
+            'status' => [
+                'nullable',
+                'in:' . implode(',', ProductStatus::getStatuses()),
+                 new CanUserMakeStatusPublishedRule($this->user())
+            ],
+            'editor_id' => ['nullable', 'integer']
         ];
     }
 
@@ -18,8 +25,8 @@ class ProductUpdateRequest extends JsonRequest
     {
         return new ProductDto(
             $this->get('name'),
-            ProductStatus::DRAFT,
-            null
+            $this->get('status', ProductStatus::DRAFT),
+            $this->get('editor_id'),
         );
     }
 }

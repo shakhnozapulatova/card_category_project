@@ -32,7 +32,7 @@ Route::group([
     Route::apiResource('products', \App\Http\Controllers\Admin\ProductsController::class, [
         'as' => 'admin'
     ])
-        ->except('store');
+        ->only('index', 'destroy');
 });
 
 Route::group([

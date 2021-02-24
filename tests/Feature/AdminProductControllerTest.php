@@ -27,56 +27,11 @@ class AdminProductControllerTest extends TestCase
             'editor_id' => null
         ]);
 
-        $role = Role::create([
-            'name' => 'admin',
-            'guard_name' => 'api'
+        $this->user = User::factory()->create([
+            'level_access' => 2,
         ]);
-
-        $this->user = User::factory()->create();
-
-        $this->user->assignRole($role);
 
         $this->token = auth()->tokenById($this->user->id);
-    }
-
-    public function updateProductRequest(array $data): \Illuminate\Testing\TestResponse
-    {
-        return $this->put(route('admin.products.update', $this->product->id),
-            $data,
-            [
-                'Authorization' => 'Bearer ' . $this->token
-            ]
-        );
-    }
-
-    public function test_admin_can_change_product_status()
-    {
-        $response = $this->updateProductRequest(
-            [
-                'name' => $this->product->name,
-                'status' => ProductStatus::PUBLISHED
-            ]
-        );
-
-        $product = Product::find($this->product->id);
-
-        $response->assertOk();
-
-        $this->assertEquals(ProductStatus::PUBLISHED, $product->status);
-    }
-
-    public function test_admin_can_assign_product_editor()
-    {
-        $response = $this->updateProductRequest([
-            'name' => $this->product->name,
-            'editor_id' => $this->user->id
-        ]);
-
-        $product = Product::find($this->product->id);
-
-        $response->assertOk();
-
-        $this->assertEquals($this->user->id, $product->editor_id);
     }
 
     public function test_admin_can_delete_product()

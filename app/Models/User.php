@@ -2,12 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Spatie\Permission\Traits\HasPermissions;
 use Spatie\Permission\Traits\HasRoles;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
@@ -70,5 +68,15 @@ class User extends Authenticatable implements JWTSubject
     public function products() : HasMany
     {
         return  $this->hasMany(Product::class);
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->level_access >= 2;
+    }
+
+    public function isEditor() : bool
+    {
+        return $this->level_access === 1;
     }
 }

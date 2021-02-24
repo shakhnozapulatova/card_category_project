@@ -5,7 +5,6 @@ namespace Tests\Feature;
 use App\Enums\ProductStatus;
 use App\Models\Product;
 use App\Models\User;
-use Database\Seeders\RolesAndPermissionsSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Spatie\Permission\Models\Role;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
@@ -27,14 +26,9 @@ class ProductControllerTest extends TestCase
     {
         parent::setUp();
 
-        $role = Role::create([
-            'name' => 'editor',
-            'guard_name' => 'api'
+        $this->user = User::factory()->create([
+            'level_access' => 1,
         ]);
-
-        $this->user = User::factory()->create();
-
-        $this->user->assignRole($role);
 
         $this->token = auth()->tokenById($this->user->id);
 
@@ -56,7 +50,6 @@ class ProductControllerTest extends TestCase
                 '*' => [
                     'id',
                     'name',
-                    'old_name',
                     'created_at',
                     'updated_at'
                 ]
@@ -82,18 +75,19 @@ class ProductControllerTest extends TestCase
             'data' => [
                 'id',
                 'name',
-                'old_name',
                 'created_at',
                 'updated_at'
             ]
         ]);
     }
 
-    public function test_editor_can_update_product_name()
+    public function test_editor_can_update_product()
     {
         $response = $this->put(route('products.update', $this->product->id),
             [
                 'name' => 'New name for created product',
+                'status' => ProductStatus::DRAFT,
+                'editor_id'  => $this->user->id,
             ],
             [
                 'Authorization' => 'Bearer ' . $this->token
@@ -103,14 +97,14 @@ class ProductControllerTest extends TestCase
 
         $this->assertDatabaseHas('products', [
             'name' => 'New name for created product',
-            'editor_id'  => null,
+            'editor_id'  => $this->user->id,
             'status' => ProductStatus::DRAFT,
             'created_at' => $this->product->created_at,
             'updated_at' => $this->product->updated_at,
         ]);
     }
 
-    public function test_editor_create_product()
+    public function test_editor_cant_create_product()
     {
         $this->expectException(RouteNotFoundException::class);
 

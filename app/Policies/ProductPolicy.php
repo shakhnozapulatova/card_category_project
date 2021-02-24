@@ -12,16 +12,16 @@ class ProductPolicy
 
     public function view(User $user, Product $product) : bool
     {
-        return $user->hasRole(['admin']) || $product->editor_id === $user->id;
+        return $user->isAdmin() || $product->editor_id === $user->id;
     }
 
-    public function update(User $user, Product $product) : bool
+    public function update(User $user, int $editorId = null) : bool
     {
-        return $user->hasRole(['admin']) || $product->editor_id === $user->id;
+        return $user->isAdmin() || $editorId === $user->id;
     }
 
     public function delete(User $user): bool
     {
-        return $user->hasRole(['admin']);
+        return $user->isAdmin();
     }
 }

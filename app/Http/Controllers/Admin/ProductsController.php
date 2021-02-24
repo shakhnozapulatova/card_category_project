@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Enums\Pagination;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\ProductUpdateRequest as AdminUpdateProductsRequest;
+use App\Http\Requests\ProductUpdateRequest;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use App\Services\ProductService;
@@ -24,20 +24,6 @@ class ProductsController extends Controller
             ->paginate($perPage);
 
         return ProductResource::collection($products);
-    }
-
-    public function show($id)
-    {
-        //
-    }
-
-    public function update(Product $product, AdminUpdateProductsRequest $request, ProductService $service): ProductResource
-    {
-        $this->authorize('update', $product);
-
-        $product = $service->update($product->id, $request->getDto());
-
-        return ProductResource::make($product);
     }
 
     public function destroy(int $id, ProductService $service): \Illuminate\Http\JsonResponse

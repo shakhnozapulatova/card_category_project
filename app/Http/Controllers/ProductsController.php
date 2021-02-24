@@ -44,11 +44,13 @@ class ProductsController extends Controller
         return response()->json(['form' => $form->fill($product)->get()]);
     }
 
-    public function update(Product $product, ProductService $service,ProductUpdateRequest $request): ProductResource
+    public function update(int $id, ProductUpdateRequest $request, ProductService $service): ProductResource
     {
-        $this->authorize('update', $product);
+        $productDto = $request->getDto();
 
-        $product = $service->update($product->id, $request->getDto());
+        $this->authorize('update', [Product::class, $productDto->getEditorId()]);
+
+        $product = $service->update($id, $productDto);
 
         return ProductResource::make($product);
     }
