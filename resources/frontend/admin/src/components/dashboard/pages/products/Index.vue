@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-card>
-      <data-table :action="action" :headers="headers" :params="params">
+      <data-table ref="productTable" :action="action" :headers="headers" :params="params">
         <template v-slot:item.editor.name="{ item }">
           <tr>
             <td>{{ item.editor ? item.editor : 'Отсутствует' }}</td>
@@ -27,11 +27,12 @@
             <v-icon small v-text="'mdi-pencil'" />
           </v-btn>
           <v-btn
+            v-show="isAdmin"
             class="px-2 ml-1"
             color="error"
             min-width="0"
             small
-            @click="deleteCat(item.id)"
+            @click="removeProduct(item.id)"
           >
             <v-icon small v-text="'mdi-delete'" />
           </v-btn>
@@ -46,15 +47,17 @@
 
 <script>
   import DataTable from '@/components/dashboard/DataTable'
-  import { mapActions, mapGetters, mapMutations } from 'vuex'
-  import headers from '@/components/dashboard/pages/products/tableHeaders'
+  import { mapActions, mapMutations, mapState } from 'vuex'
+  import headers from '@/components/dashboard/pages/products/table/headers'
   import SingleProductInfo from '@/components/dashboard/pages/products/SingleProductInfo'
+  import LoadProductAttributesMixin from '@/components/dashboard/pages/products/mixins/LoadProductAttributesMixin'
 
   export default {
     name: 'Index',
     components: {
       DataTable, SingleProductInfo,
     },
+    mixins: [LoadProductAttributesMixin],
     data () {
       return {
         action: 'product/getProductList',
@@ -70,17 +73,7 @@
       }
     },
     computed: {
-      ...mapGetters({
-        getAttributeByKey: 'attributes/getAttributeByKey',
-      }),
-    },
-    created () {
-      if (!this.getAttributeByKey('atx')) {
-        this.getOptions('atx')
-          .then(({ data }) => {
-            this.setAttribute({ key: 'atx', data: data.data })
-          })
-      }
+      ...mapState('auth', ['isAdmin', 'isEditor']),
     },
     methods: {
       ...mapActions('product', ['deleteProduct']),
@@ -98,6 +91,10 @@
       viewFullProductInfo (item) {
         this.currentProduct = item
         this.dialog = true
+      },
+      async removeProduct (productId) {
+        this.deleteProduct(productId)
+        await this.$refs.productTable.fetchPosts()
       },
     },
   }

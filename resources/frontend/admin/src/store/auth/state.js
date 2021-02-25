@@ -4,5 +4,6 @@ export default () => ({
   isLoggedIn: null,
   authError: null,
   isAdmin: null,
+  isEditor: null,
   permissions: [],
 })

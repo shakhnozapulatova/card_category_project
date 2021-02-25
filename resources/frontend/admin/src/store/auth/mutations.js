@@ -9,10 +9,18 @@ export default {
     state.permissions = []
     localStorage.removeItem('token')
   },
-  authSuccess (state, payload) {
+  authSuccess (state, { user }) {
     state.authError = false
     state.isLoggedIn = true
     state.isActive = true
+
+    if (user.level_access >= 1) {
+      state.isEditor = true
+    }
+
+    if (user.level_access >= 2) {
+      state.isAdmin = true
+    }
   },
   setToken (state, payload) {
     try {

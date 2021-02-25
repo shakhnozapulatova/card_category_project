@@ -1,4 +1,3 @@
-import { ProductService } from '@/services/ProductService'
 import HttpService from '@/services/HttpService'
 
 export default {
@@ -8,22 +7,20 @@ export default {
       return HttpService.get('products', params)
     },
     getProductById ({ commit }, { id, params }) {
-      return ProductService.getResourceList(id, params)
-    },
-    createProduct ({ commit }, data) {
-      return ProductService.createResource(data)
+      const url = `products/${id}`
+      return HttpService.get(url, params)
     },
     updateProduct ({ commit }, { id, data }) {
-      return ProductService.updateResource(id, data)
+      const url = `products/${id}`
+      return HttpService.post(url, data)
+    },
+    updateProductData ({ commit }, { id, data }) {
+      const url = `product-data/${id}`
+      return HttpService.put(url, data)
     },
     deleteProduct ({ commit }, id) {
-      return ProductService.deleteResourceById(id)
-    },
-    getProductUpdateForm ({ commit }, id) {
-      return ProductService.getUpdateForm(id)
-    },
-    getProductCreateForm ({ commit }) {
-      return ProductService.getCreateForm()
+      const url = `admin/products/${id}`
+      return HttpService.delete(url)
     },
   },
 }

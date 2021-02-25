@@ -16,7 +16,18 @@
         :scope="'create-category'"
         :on-submit="create"
         :loading="loading"
-      />
+      >
+        <template v-slot:data.atx-field="{ field, updateFieldValue }">
+          <treeselect-field
+            v-model="field.value"
+            :name="field.name"
+            :label="field.label"
+            :options="atxOptions"
+            validation-rule="required"
+            @input="updateFieldValue"
+          />
+        </template>
+      </form-base>
     </base-material-card>
   </v-container>
 </template>
@@ -24,41 +35,53 @@
 <script>
 
   import FormBase from '@/components/form/FormBase'
-  import { mapActions, mapGetters, mapMutations } from 'vuex'
+  import { mapActions, mapMutations } from 'vuex'
+  import schema from '@/components/dashboard/pages/products/form/updateSchema'
+  import TreeselectField from '@/components/form/fields/TreeselectField'
+  import LoadProductAttributesMixin from '@/components/dashboard/pages/products/mixins/LoadProductAttributesMixin'
+  import objectPath from 'object-path'
+
   export default {
     name: 'Update',
     components: {
       FormBase,
+      TreeselectField,
     },
+    mixins: [LoadProductAttributesMixin],
     data () {
       return {
-        schema: [],
+        schema,
         formValue: '',
         loading: false,
         id: '',
-        atx: {
-          value: '',
-        },
+        currentProduct: '',
       }
     },
     created () {
       this.id = this.$route.params.id
 
-      this.getProductUpdateForm(this.id)
+      this.getProductById({ id: this.id, params: { with: 'data' } })
         .then(({ data }) => {
-          this.schema = data.form
+          this.currentProduct = data
+          this.schema.forEach(field => {
+            field.value = objectPath.get(this.currentProduct, field.name) || null
+          })
+        })
+        .catch(() => {
+          alert('Извините но вы не можете редактировать этот товар')
         })
     },
     methods: {
-      ...mapActions('product', ['getProductUpdateForm', 'getProductById', 'updateProduct']),
-      ...mapActions('productData', ['createProductData']),
+      ...mapActions('product', ['getProductUpdateForm', 'getProductById', 'updateProduct', 'updateProductData']),
+      ...mapActions('attributes', ['getOptions']),
       ...mapMutations('alert', ['successMessage', 'errorMessage']),
+      ...mapMutations('attributes', ['setAttribute']),
       create () {
         this.loading = true
         this.updateProduct({ id: this.id, data: this.formValue })
           .then(({ data }) => {
             const { id } = data.data
-            this.createProductData({ id, data: this.formValue })
+            this.updateProductData({ id, data: this.formValue })
               .then(() => {
                 this.successMessage('Продукт обновлен')
                 this.loading = false

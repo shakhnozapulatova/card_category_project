@@ -4,16 +4,16 @@ export default {
   namespaced: true,
   state: {
     attributes: {},
+    atx: [],
   },
   mutations: {
-    setAttribute (state, payload) {
-      const { key } = payload
-      state.attributes[key] = payload.data
+    setAttribute (state, { key, data }) {
+      state[key] = data
     },
   },
   getters: {
     getAttributeByKey: state => key => {
-      return state.attributes[key]
+      return state[key]
     },
   },
   actions: {
