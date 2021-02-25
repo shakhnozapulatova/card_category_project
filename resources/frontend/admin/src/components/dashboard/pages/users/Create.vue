@@ -12,8 +12,8 @@
     >
       <form-base
         v-model="formValue"
-        :schema="schema"
-        :scope="'create-category'"
+        :schema="[]"
+        scope="user-create-form"
         :on-submit="create"
         :loading="loading"
       />
@@ -44,20 +44,9 @@
         })
     },
     methods: {
-      ...mapActions('category', ['getCreateForm', 'createCategory']),
       ...mapMutations('alert', ['successMessage', 'errorMessage']),
       create () {
         this.loading = true
-        this.createCategory(this.formValue)
-          .then(() => {
-            this.$router.push({ name: 'categories' })
-            this.successMessage('Категория создана')
-            this.loading = false
-          })
-          .catch((error) => {
-            this.errorMessage(error)
-            this.loading = false
-          })
       },
     },
   }

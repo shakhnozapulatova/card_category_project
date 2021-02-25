@@ -42,7 +42,6 @@
         })
     },
     methods: {
-      ...mapActions('category', ['getUpdateForm', 'updateCategory']),
       ...mapMutations('alert', ['errorMessage', 'successMessage']),
       update () {
         this.loading = true

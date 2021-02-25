@@ -1,23 +1,23 @@
 import axios from 'axios'
 
 export default class HttpService {
-  static get (url, params = {}, headers) {
+  static get (url, params = {}, headers = {}) {
     return this.makeRequest(url, 'get', params, headers)
   }
 
-  static post (url, params = {}, headers) {
+  static post (url, params = {}, headers = {}) {
     return this.makeRequest(url, 'post', params, headers)
   }
 
-  static put (url, params = {}, headers) {
+  static put (url, params = {}, headers = {}) {
     return this.makeRequest(url, 'put', params, headers)
   }
 
-  static patch (url, params = {}, headers) {
+  static patch (url, params = {}, headers = {}) {
     return this.makeRequest(url, 'patch', params, headers)
   }
 
-  static delete (url, params = {}, headers) {
+  static delete (url, params = {}, headers = {}) {
     return this.makeRequest(url, 'delete', headers)
   }
 
