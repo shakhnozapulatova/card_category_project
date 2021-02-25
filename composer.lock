@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1adba7f3a1a784d59b610cf71a196b69",
+    "content-hash": "8880a33d1ac3092f2d1ae5054a6dcdf5",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -4051,79 +4051,6 @@
             "time": "2020-05-12T15:16:56+00:00"
         },
         {
-            "name": "saodat/formbase",
-            "version": "v3.x-dev",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/saodat1998/formbase-laravel-package.git",
-                "reference": "bc5908e8ac45df01c71e40db59c397e71c60eab2"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/saodat1998/formbase-laravel-package/zipball/bc5908e8ac45df01c71e40db59c397e71c60eab2",
-                "reference": "bc5908e8ac45df01c71e40db59c397e71c60eab2",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/support": "^8.0",
-                "php": "^7.3"
-            },
-            "require-dev": {
-                "orchestra/testbench": "^6.0",
-                "phpunit/phpunit": "^9.3.8"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Saodat\\FormBase\\FormBaseServiceProvider"
-                    ],
-                    "aliases": {
-                        "FormBase": "Saodat\\FormBase\\FormBaseFacade"
-                    }
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Saodat\\FormBase\\": "src"
-                }
-            },
-            "autoload-dev": {
-                "psr-4": {
-                    "Saodat\\FormBase\\Tests\\": "tests"
-                }
-            },
-            "scripts": {
-                "test": [
-                    "vendor/bin/phpunit"
-                ],
-                "test-coverage": [
-                    "vendor/bin/phpunit --coverage-html coverage"
-                ]
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Saodat",
-                    "email": "saodat.9808@gmail.com",
-                    "role": "Developer"
-                }
-            ],
-            "description": "form fields generator",
-            "homepage": "https://github.com/saodat/formbase",
-            "keywords": [
-                "formbase",
-                "saodat"
-            ],
-            "support": {
-                "source": "https://github.com/saodat1998/formbase-laravel-package/tree/v3",
-                "issues": "https://github.com/saodat1998/formbase-laravel-package/issues"
-            },
-            "time": "2020-11-07T16:50:45+00:00"
-        },
-        {
             "name": "seld/jsonlint",
             "version": "1.8.3",
             "source": {
@@ -7247,16 +7174,16 @@
         },
         {
             "name": "laravel/sail",
-            "version": "v1.4.1",
+            "version": "v1.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/sail.git",
-                "reference": "87c63c2956749f66e43467d4a730b917ef7428b7"
+                "reference": "0200ce6e0f697699bce036c42d91f1daab8039a8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/sail/zipball/87c63c2956749f66e43467d4a730b917ef7428b7",
-                "reference": "87c63c2956749f66e43467d4a730b917ef7428b7",
+                "url": "https://api.github.com/repos/laravel/sail/zipball/0200ce6e0f697699bce036c42d91f1daab8039a8",
+                "reference": "0200ce6e0f697699bce036c42d91f1daab8039a8",
                 "shasum": ""
             },
             "require": {
@@ -7299,7 +7226,7 @@
                 "docker",
                 "laravel"
             ],
-            "time": "2021-02-23T22:04:12+00:00"
+            "time": "2021-02-24T21:20:16+00:00"
         },
         {
             "name": "mockery/mockery",
@@ -9071,9 +8998,7 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "saodat/formbase": 20
-    },
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

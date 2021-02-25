@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Enums\Pagination;
-use App\Forms\ProductForm;
 use App\Http\Requests\ProductUpdateRequest;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
@@ -36,12 +35,6 @@ class ProductsController extends Controller
         }
 
         return ProductResource::make($product);
-    }
-
-    public function edit(Product $product, ProductForm $form): \Illuminate\Http\JsonResponse
-    {
-        $product->load('data');
-        return response()->json(['form' => $form->fill($product)->get()]);
     }
 
     public function update(int $id, ProductUpdateRequest $request, ProductService $service): ProductResource

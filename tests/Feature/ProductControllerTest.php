@@ -129,15 +129,4 @@ class ProductControllerTest extends TestCase
             ]);
 
     }
-
-    public function test_edit_product_form()
-    {
-        $response = $this->get(route('products.edit', $this->product->id),
-            [
-                'Authorization' => 'Bearer ' . $this->token
-            ]);
-
-        $response->assertOk();
-        $response->assertJsonStructure(['form']);
-    }
 }
