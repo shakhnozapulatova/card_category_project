@@ -5,12 +5,12 @@ export default {
     base: process.env.BASE_URL,
   routes: [
   {
-    path: '/',
+    path: '/login',
     component: () => import('@/layouts/Page'),
     children: [
       {
         name: 'login',
-        path: 'login',
+        path: '/',
         component: () => import('@/components/pages/Login'),
       },
     ],
