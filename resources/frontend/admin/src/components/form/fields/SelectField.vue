@@ -7,13 +7,14 @@
     :vid="name"
   >
     <v-select
-      v-model="innerValue"
+      :value="value"
       :error-messages="errors"
       :items="options"
       v-bind="attributes"
       item-text="name"
       item-value="id"
       :label="label"
+      @change="updateValue"
     />
   </validation-provider>
 </template>

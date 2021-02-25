@@ -24,10 +24,10 @@
         :key="`checkbox-${id}-${index}`"
       >
         <v-checkbox
-          v-model="innerValue"
           :error-messages="errors"
           :value="option.id"
           :label="label"
+          @change="updateValue"
         />
       </v-col>
     </v-row>

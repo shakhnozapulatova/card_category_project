@@ -16,7 +16,7 @@
         :vid="name"
       >
         <v-text-field
-          v-model="innerValue"
+          :value="value"
           :name="name"
           v-bind="attributes"
           :error-messages="errors"
@@ -29,7 +29,7 @@
     </template>
     <v-date-picker
       ref="picker"
-      v-model="innerValue"
+      :value="value"
       v-bind="attributes"
       :locale="locale"
       @change="save"

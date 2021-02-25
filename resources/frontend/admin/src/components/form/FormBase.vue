@@ -7,7 +7,7 @@
           :key="index"
           :md="field.attributes.cols || 12"
         >
-          <slot :field-name="`${field.name}-field`" :field="field" :updateFormFiled="updateFieldValue">
+          <slot :name="`${field.name}-field`" :field="field" :updateFieldValue="updateFieldValue">
             <component
               :is="`${field.component}-field`"
               :scope="scope"

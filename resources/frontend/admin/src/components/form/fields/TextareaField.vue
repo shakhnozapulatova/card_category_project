@@ -7,9 +7,10 @@
     :vid="name"
   >
     <v-textarea
-      v-model="innerValue"
+      :value="value"
       :label="label"
       :error-messages="errors"
+      @input="updateValue"
     />
   </validation-provider>
 </template>

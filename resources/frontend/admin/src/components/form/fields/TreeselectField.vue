@@ -12,11 +12,12 @@
     />
     <treeselect
       ref="treeSelect"
-      v-model="innerValue"
+      :value="value"
       class="treeselect-component"
       :options="formattedOptions"
       :normalizer="normalizer"
       v-bind="attributes"
+      @input="updateValue"
     />
   </validation-provider>
 </template>

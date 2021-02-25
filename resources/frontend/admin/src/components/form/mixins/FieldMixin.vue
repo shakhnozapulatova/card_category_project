@@ -41,28 +41,12 @@
         },
       },
     },
-    data: () => ({
-      innerValue: null,
-    }),
-    watch: {
-      innerValue (newVal) {
+    methods: {
+      updateValue (e) {
         this.$emit('input', {
           name: this.name,
-          value: newVal,
+          value: e,
         })
-      },
-      value (newVal) {
-        this.innerValue = newVal
-      },
-    },
-    created () {
-      this.setComponentValue()
-    },
-    methods: {
-      setComponentValue () {
-        if (this.value !== undefined) {
-          this.innerValue = this.value
-        }
       },
     },
   }

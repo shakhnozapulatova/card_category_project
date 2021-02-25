@@ -7,7 +7,7 @@
     :vid="name"
   >
     <v-text-field
-      v-model="innerValue"
+      :value="value"
       :name="name"
       :error-messages="errors"
       :type="type"
@@ -15,6 +15,7 @@
       :label="label"
       :hint="hint"
       :placeholder="placeholder"
+      @input="updateValue"
     />
   </validation-provider>
 </template>

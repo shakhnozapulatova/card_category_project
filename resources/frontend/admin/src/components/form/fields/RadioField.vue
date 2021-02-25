@@ -18,9 +18,10 @@
         </v-subheader>
       </v-col>
       <v-radio-group
-        v-model="innerValue"
+        :value="value"
         class="ml-4 mt-0"
         :error-messages="errors"
+        @change="updateValue"
       >
         <v-radio
           v-for="(option, index) in options"
