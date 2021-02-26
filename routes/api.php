@@ -41,6 +41,9 @@ Route::group([
     Route::resource('products', \App\Http\Controllers\ProductsController::class)
         ->except('store', 'destroy', 'create', 'edit');
 
+    Route::apiResource('users', \App\Http\Controllers\UsersController::class)
+        ->only('index');
+
     Route::resource('product-attributes-option', \App\Http\Controllers\AttributeOptionsController::class)
         ->only( 'index');
 

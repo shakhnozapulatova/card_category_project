@@ -4,7 +4,12 @@
       <data-table ref="productTable" :action="action" :headers="headers" :params="params">
         <template v-slot:item.editor.name="{ item }">
           <tr>
-            <td>{{ item.editor ? item.editor : 'Отсутствует' }}</td>
+            <td>{{ item.editor ? item.editor.name : 'Отсутствует' }}</td>
+          </tr>
+        </template>
+        <template v-slot:item.status="{ item }">
+          <tr>
+            <td>{{ getStatusLabelBySlug(item.status) }}</td>
           </tr>
         </template>
         <template v-slot:item.actions="{ item }">
@@ -40,7 +45,18 @@
       </data-table>
     </v-card>
     <v-dialog v-model="dialog" max-width="768">
-      <single-product-info :product="currentProduct" />
+      <single-product-info :product="currentProduct">
+        <template v-slot:actions>
+          <v-card-actions class="justify-end">
+            <v-btn
+              text
+              @click="dialog = false"
+            >
+              Закрыть
+            </v-btn>
+          </v-card-actions>
+        </template>
+      </single-product-info>
     </v-dialog>
   </v-container>
 </template>
@@ -51,13 +67,15 @@
   import headers from '@/components/dashboard/pages/products/table/headers'
   import SingleProductInfo from '@/components/dashboard/pages/products/SingleProductInfo'
   import LoadProductAttributesMixin from '@/components/dashboard/pages/products/mixins/LoadProductAttributesMixin'
+  import LoadUsersListMixin from '@/components/dashboard/pages/users/mixins/LoadUsersListMixin'
+  import ProductStatusMixin from '@/components/dashboard/pages/users/mixins/ProductStatusMixin'
 
   export default {
     name: 'Index',
     components: {
       DataTable, SingleProductInfo,
     },
-    mixins: [LoadProductAttributesMixin],
+    mixins: [LoadProductAttributesMixin, LoadUsersListMixin, ProductStatusMixin],
     data () {
       return {
         action: 'product/getProductList',

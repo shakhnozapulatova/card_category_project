@@ -1,16 +1,16 @@
 <script>
-  import { mapState } from 'vuex'
+  import { mapActions, mapGetters, mapMutations, mapState } from 'vuex'
 
   export default {
     name: 'LoadProductAttributesMixin',
     computed: {
-      ...mapState('attributes', ['atx']),
-      atxOptions () {
-        return this.atx
+      ...mapGetters('attributes', ['getAttributeByKey']),
+      atx () {
+        return this.getAttributeByKey('atx')
       },
     },
     created () {
-      if (!this.atxOptions.length) {
+      if (!this.getAttributeByKey('atx').length) {
         this.getOptions('atx')
           .then(({ data }) => {
             const options = this.formatAtxOptions(data.data)
@@ -19,6 +19,8 @@
       }
     },
     methods: {
+      ...mapActions('attributes', ['getOptions']),
+      ...mapMutations('attributes', ['setAttribute']),
       formatAtxOptions (options) {
         return options.map(option => {
           const formattedOption = {

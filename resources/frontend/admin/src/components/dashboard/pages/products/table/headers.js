@@ -2,10 +2,17 @@ export default [
   {
     text: 'Название',
     value: 'name',
+    sortable: false,
   },
   {
     text: 'Модератор',
     value: 'editor.name',
+    sortable: false,
+  },
+  {
+    text: 'Статус',
+    value: 'status',
+    sortable: false,
   },
   {
     sortable: false,
@@ -24,7 +31,7 @@ export default [
   },
   {
     sortable: false,
-    text: 'Категория 5',
+    text: 'Категория',
     value: 'data.category',
   },
   {

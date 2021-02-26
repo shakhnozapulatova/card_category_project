@@ -9,6 +9,7 @@ export default {
   mutations: {
     setAttribute (state, { key, data }) {
       state[key] = data
+      state.attributes[key] = data
     },
   },
   getters: {

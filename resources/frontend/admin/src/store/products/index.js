@@ -12,7 +12,7 @@ export default {
     },
     updateProduct ({ commit }, { id, data }) {
       const url = `products/${id}`
-      return HttpService.post(url, data)
+      return HttpService.put(url, data)
     },
     updateProductData ({ commit }, { id, data }) {
       const url = `product-data/${id}`

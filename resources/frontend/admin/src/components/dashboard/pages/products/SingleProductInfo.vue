@@ -1,11 +1,12 @@
 <template>
   <div>
     <v-card>
-      <v-card-title class="headline" align="center">
-        <h3 class="text-center w-100">
-          Информация о продукте
-        </h3>
-      </v-card-title>
+      <v-toolbar
+        color="primary"
+        dark
+      >
+        <h3>Информация о продукте</h3>
+      </v-toolbar>
       <v-card-text class="good-info">
         <v-row>
           <v-col cols="6">
@@ -40,6 +41,18 @@
             <strong>Страна производитель (старое значение):</strong>
             <div>{{ product.data.old_country_producer }}</div>
           </v-col>
+          <v-col cols="6">
+            <strong>Модератор</strong>
+            <div>
+              {{ product.editor ? product.editor.name : 'Отсутствует' }}
+            </div>
+          </v-col>
+          <v-col cols="6">
+            <strong>Статус</strong>
+            <div>
+              {{ getStatusLabelBySlug(product.status) }}
+            </div>
+          </v-col>
           <v-col cols="12">
             <strong>Категории</strong>
             <div>
@@ -51,13 +64,16 @@
           </v-col>
         </v-row>
       </v-card-text>
+      <slot name="actions" />
     </v-card>
   </div>
 </template>
 
 <script>
+  import ProductStatusMixin from '@/components/dashboard/pages/users/mixins/ProductStatusMixin'
   export default {
     name: 'SingleProductInfo',
+    mixins: [ProductStatusMixin],
     props: {
       product: {
         type: Object,

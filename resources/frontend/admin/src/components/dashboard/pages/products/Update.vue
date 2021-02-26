@@ -22,8 +22,19 @@
             v-model="field.value"
             :name="field.name"
             :label="field.label"
-            :options="atxOptions"
+            :options="atx"
             validation-rule="required"
+            @input="updateFieldValue"
+          />
+        </template>
+        <template v-slot:editor_id-field="{ field, updateFieldValue }">
+          <select-field
+            v-model="field.value"
+            :name="field.name"
+            :label="field.label"
+            :options="users"
+            validation-rule="required"
+            :attributes="field.attributes"
             @input="updateFieldValue"
           />
         </template>
@@ -34,48 +45,62 @@
 
 <script>
 
+  import objectPath from 'object-path'
   import FormBase from '@/components/form/FormBase'
-  import { mapActions, mapMutations } from 'vuex'
-  import schema from '@/components/dashboard/pages/products/form/updateSchema'
+  import { mapActions, mapGetters, mapMutations } from 'vuex'
+  import SelectField from '@/components/form/fields/SelectField'
   import TreeselectField from '@/components/form/fields/TreeselectField'
   import LoadProductAttributesMixin from '@/components/dashboard/pages/products/mixins/LoadProductAttributesMixin'
-  import objectPath from 'object-path'
+  import LoadUsersListMixin from '@/components/dashboard/pages/users/mixins/LoadUsersListMixin'
+  import UpdateSchemaFieldMixin from './form/mixins/UpdateSchemaFieldMixin'
 
   export default {
     name: 'Update',
     components: {
       FormBase,
       TreeselectField,
+      SelectField,
     },
-    mixins: [LoadProductAttributesMixin],
+    mixins: [LoadProductAttributesMixin, LoadUsersListMixin, UpdateSchemaFieldMixin],
     data () {
       return {
-        schema,
         formValue: '',
         loading: false,
         id: '',
         currentProduct: '',
+        schema: [],
       }
+    },
+    computed: {
+      ...mapGetters(['user/users']),
     },
     created () {
       this.id = this.$route.params.id
 
-      this.getProductById({ id: this.id, params: { with: 'data' } })
+      // initialize fields
+      this.schema = this.getSchema()
+
+      this.getProductById({ id: this.id, params: { with: ['data', 'editor'] } })
         .then(({ data }) => {
           this.currentProduct = data
-          this.schema.forEach(field => {
+          this.schema = this.getSchema().map(field => {
             field.value = objectPath.get(this.currentProduct, field.name) || null
+
+            if (field.name === 'editor_id') {
+              field.value = objectPath.get(this.currentProduct, 'editor.id')
+            }
+
+            return field
           })
         })
         .catch(() => {
+          // Todo replace with SweetAlert or default sanckbar
           alert('Извините но вы не можете редактировать этот товар')
         })
     },
     methods: {
-      ...mapActions('product', ['getProductUpdateForm', 'getProductById', 'updateProduct', 'updateProductData']),
-      ...mapActions('attributes', ['getOptions']),
+      ...mapActions('product', ['getProductById', 'updateProduct', 'updateProductData']),
       ...mapMutations('alert', ['successMessage', 'errorMessage']),
-      ...mapMutations('attributes', ['setAttribute']),
       create () {
         this.loading = true
         this.updateProduct({ id: this.id, data: this.formValue })
@@ -85,7 +110,7 @@
               .then(() => {
                 this.successMessage('Продукт обновлен')
                 this.loading = false
-                // this.$router.push({ name: 'products' })
+                this.$router.push({ name: 'products' })
               })
           })
           .catch((error) => {

@@ -12,12 +12,15 @@ class User extends Authenticatable implements JWTSubject
 {
     use HasFactory, Notifiable;
 
+    const ADMIN_LEVEL_ACCESS = 2;
+    const EDITOR_LEVEL_ACCESS = 1;
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
+        'editor_id',
         'name',
         'email',
         'password',
@@ -70,11 +73,11 @@ class User extends Authenticatable implements JWTSubject
 
     public function isAdmin(): bool
     {
-        return $this->level_access >= 2;
+        return $this->level_access >= self::ADMIN_LEVEL_ACCESS;
     }
 
     public function isEditor() : bool
     {
-        return $this->level_access === 1;
+        return $this->level_access === self::EDITOR_LEVEL_ACCESS;
     }
 }

@@ -1,24 +1,31 @@
 <template>
   <validation-provider
+    v-slot="{ errors }"
     tag="div"
     :rules="validationRule"
     :name="label"
     class="treeselect-container"
     :vid="name"
   >
-    <label
-      class="treeselect-label"
-      v-text="label"
-    />
-    <treeselect
-      ref="treeSelect"
-      :value="value"
-      class="treeselect-component"
-      :options="formattedOptions"
-      :normalizer="normalizer"
-      v-bind="attributes"
-      @input="updateValue"
-    />
+    <div class="treeselect-component">
+      <label
+        class="treeselect-label"
+        v-text="label"
+      />
+      <treeselect
+        ref="treeSelect"
+        :value="value"
+        :options="formattedOptions"
+        :normalizer="normalizer"
+        v-bind="attributes"
+        @input="updateValue"
+      />
+      <div v-show="errors.length">
+        <div v-for="(error, index) in errors" :key="index">
+          {{ error }}
+        </div>
+      </div>
+    </div>
   </validation-provider>
 </template>
 

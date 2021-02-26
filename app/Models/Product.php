@@ -20,6 +20,6 @@ class Product extends Model
 
     public function editor() : BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'editor_id');
     }
 }
