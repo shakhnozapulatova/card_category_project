@@ -10,19 +10,34 @@
     <div class="treeselect-component">
       <label
         class="treeselect-label"
+        :class="{
+          'has-errors': errors.length
+        }"
         v-text="label"
       />
       <treeselect
         ref="treeSelect"
+        :class="{
+          'has-errors': errors.length
+        }"
         :value="value"
         :options="formattedOptions"
         :normalizer="normalizer"
+        no-options-text="Нет доступных опций"
+        no-results-text="Нет доступных опций"
         v-bind="attributes"
+        :placeholder="label"
         @input="updateValue"
       />
-      <div v-show="errors.length">
-        <div v-for="(error, index) in errors" :key="index">
-          {{ error }}
+      <div class="v-text-field" style="padding-top: 8px;">
+        <div v-show="errors.length" class="v-text-field__details">
+          <div class="v-messages theme--light error--text" role="alert">
+            <div v-for="(error, index) in errors" :key="index" class="v-messages__wrapper">
+              <div class="v-messages__message pl-3">
+                {{ error }}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -79,9 +94,14 @@
   }
 </script>
 
-<style>
+<style lang="scss">
 .treeselect-component {
-  margin-bottom: 40px;
+  > * {
+    transition: .25s all;
+  }
+}
+.treeselect-label.has-errors {
+  color: rgb(255, 82, 82) !important;
 }
 .treeselect-component .vue-treeselect__control {
   padding-top: 15px;
@@ -106,9 +126,33 @@
     padding-right: 3px;
     padding-left: 2px;
   }
-.treeselect-component .vue-treeselect__control {
-  border-color: rgba(0, 0, 0, 0.42);
+.treeselect-component {
+  .vue-treeselect__control {
+    border-color: rgba(0, 0, 0, 0.42);
+  }
+  .has-errors {
+    .treeselect-label {
+      color: rgb(255, 82, 82);
+    }
+    .vue-treeselect__control {
+      border-color: rgb(255, 82, 82);
+      border-width: 2px;
+
+      .vue-treeselect-helper-zoom-effect-off {
+        color: rgb(255, 82, 82);
+      }
+      &:hover {
+        border-color: rgb(255, 82, 82);
+        border-width: 2px;
+      }
+
+      svg {
+        fill: rgb(255, 82, 82);
+      }
+    }
+  }
 }
+
 .treeselect-component.vue-treeselect--open-below:not(.vue-treeselect--append-to-body) .vue-treeselect__menu-container {
   /* position: relative; */
   top: -20%;

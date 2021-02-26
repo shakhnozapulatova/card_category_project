@@ -199,6 +199,7 @@
               cols: 6,
             },
             options: [],
+            placeholder: 'Код АТХ',
           },
           {
             component: 'text',
@@ -279,6 +280,7 @@
               cols: 4,
             },
             options: [],
+            placeholder: 'Категория',
           },
           {
             component: 'select',
