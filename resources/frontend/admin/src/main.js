@@ -29,7 +29,8 @@ function boot () {
 // extract user before vue instance created
 store.dispatch('auth/fetchUser')
   .then(() => {
-    boot()
+    store.dispatch('auth/refreshToken')
+      .then(() => boot())
   })
   .catch(() => {
     boot()

@@ -29,7 +29,7 @@ export default {
   refreshToken ({ commit }) {
     return AuthService.refreshToken()
       .then(({ data }) => {
-        commit('authSuccess', data)
+        commit('setToken', data)
         return Promise.resolve(data)
       })
   },
