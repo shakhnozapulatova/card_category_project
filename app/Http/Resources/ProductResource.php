@@ -11,6 +11,7 @@ class ProductResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'editor_id' => $this->editor_id,
             'editor' => $this->whenLoaded('editor'),
             'status' => $this->status,
             'data' => new ProductDataCollection($this->whenLoaded('data')),

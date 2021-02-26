@@ -13,6 +13,8 @@ class ProductFactory extends Factory
     {
         return [
             'name' => $this->faker->name,
+            'editor_id' => $this->faker->randomDigit,
+            'status' => $this->faker->randomLetter
         ];
     }
 }

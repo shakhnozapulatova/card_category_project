@@ -37,6 +37,27 @@ class ProductControllerTest extends TestCase
         ]);
     }
 
+    public function test_editor_can_see_only_assigned_products_to_him()
+    {
+        Product::factory()->create([
+            'editor_id' => 100
+        ]);
+
+        $response = $this->get(route('products.index'), [
+            'Authorization' => 'Bearer ' . $this->token
+        ]);
+
+        $response->assertOk();
+
+        $products = $response->json()['data'];
+
+        $everyProductAssignedToEditor = collect($products)->every(function ($product){
+            return $product['editor_id'] === $this->user->id;
+        });
+
+        $this->assertTrue($everyProductAssignedToEditor);
+    }
+
     public function test_can_editor_view_products()
     {
         $response = $this->get(route('products.index'), [

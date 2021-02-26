@@ -1,10 +1,12 @@
 import HttpService from '@/services/HttpService'
-
+import store from '@/store'
 export default {
   namespaced: true,
   actions: {
-    getProductList ({ commit }, params) {
-      return HttpService.get('products', params)
+    getProductList ({ state }, params) {
+      // import auth state from store
+      const url = store.state.auth.isAdmin ? 'admin/products' : 'products'
+      return HttpService.get(url, params)
     },
     getProductById ({ commit }, { id, params }) {
       const url = `products/${id}`

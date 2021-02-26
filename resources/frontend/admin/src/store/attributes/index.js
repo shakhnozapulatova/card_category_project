@@ -19,7 +19,7 @@ export default {
   },
   actions: {
     getOptions ({ commit }, attributeName) {
-      return HttpService.get('product-attributes-option', {
+      return HttpService.get('attributes-option', {
         attribute: attributeName,
       })
     },

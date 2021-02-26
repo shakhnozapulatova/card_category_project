@@ -86,10 +86,6 @@
           this.schema = this.getSchema().map(field => {
             field.value = objectPath.get(this.currentProduct, field.name) || null
 
-            if (field.name === 'editor_id') {
-              field.value = objectPath.get(this.currentProduct, 'editor.id')
-            }
-
             return field
           })
         })

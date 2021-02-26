@@ -31,7 +31,7 @@ class AttributesOptionsTest extends TestCase
             'parent_id' => $option->id
         ]);
 
-        $response = $this->get(route('product-attributes-option.index', ['attribute' => 'atx']), [
+        $response = $this->get(route('attributes-option.index', ['attribute' => 'atx']), [
             'Authorization' => 'Bearer ' . $this->token
         ]);
 

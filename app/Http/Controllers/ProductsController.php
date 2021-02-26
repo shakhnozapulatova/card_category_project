@@ -6,33 +6,40 @@ use App\Enums\Pagination;
 use App\Http\Requests\ProductUpdateRequest;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
+use App\Queries\Product\ProductQuery;
 use App\Services\ProductService;
 use Illuminate\Http\Request;
 
 class ProductsController extends Controller
 {
+    /**
+     * @var ProductQuery
+     */
+    private $productQuery;
+
+    public function __construct(ProductQuery $productQuery)
+    {
+        $this->productQuery = $productQuery;
+    }
+
     public function index(Request $request): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
         $perPage = $request->get('perPage', Pagination::DEFAULT_PER_PAGE);
 
-        $query = $request->with ? Product::with($request->with) : Product::query();
-
-        $products = $query->when($request->name, function ($query, $name) {
-            $query->where('name', $query, $name);
-        })
-            ->paginate($perPage);
+        $products = $this->productQuery
+            ->byEditorId(auth()->id())
+            ->execute($perPage);
 
         return ProductResource::collection($products);
     }
 
 
-    public function show(Product $product): ProductResource
+    public function show(int $id): ProductResource
     {
-        $this->authorize('view', $product);
+        $result  = $this->productQuery->byId($id)->execute();
+        $product = $result->first();
 
-        if ($with = \request()->with) {
-            $product->load($with);
-        }
+        $this->authorize('view', $product);
 
         return ProductResource::make($product);
     }
