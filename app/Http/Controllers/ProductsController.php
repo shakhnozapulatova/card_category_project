@@ -28,6 +28,8 @@ class ProductsController extends Controller
 
         $products = $this->productQuery
             ->byEditorId(auth()->id())
+            ->byName($request->get('name'))
+            ->byStatus($request->get('status'))
             ->execute($perPage);
 
         return ProductResource::collection($products);

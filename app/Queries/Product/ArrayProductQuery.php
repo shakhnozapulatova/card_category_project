@@ -13,6 +13,14 @@ class ArrayProductQuery implements ProductQuery
     private $editorId;
 
     private $productId;
+    /**
+     * @var string
+     */
+    private $status;
+    /**
+     * @var string
+     */
+    private $name;
 
     public function __construct(array $products)
     {
@@ -31,23 +39,40 @@ class ArrayProductQuery implements ProductQuery
         return $this;
     }
 
+    public function byStatus(string $status): ArrayProductQuery
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    public function byName(string $name): ArrayProductQuery
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
     public function execute(): array
     {
-        $result = collect();
-
-        if ($this->editorId) {
-            collect($this->productStorage)->where('editor_id', $this->editorId)
-                ->each(function ($product) use ($result) {
-                    $result->add($product);
+        $result = collect($this->productStorage)
+            ->when($this->editorId, function ($productStorage) {
+                return $productStorage->where('editor_id', $this->editorId);
+            })
+            ->when($this->productId, function ($productStorage) {
+                return $productStorage->where('id', $this->productId);
+            })
+            ->when($this->status, function ($productStorage) {
+                return $productStorage->where('status', $this->status);
+            })
+            ->when($this->name, function ($productStorage) {
+                return $productStorage->filter(function($item) {
+                    if (strpos($this->name, $item['name']) !== false) {
+                        return $item;
+                    }
+                    return [];
                 });
-        }
-
-        if ($this->productId) {
-            collect($this->productStorage)->where('id', $this->productId)
-                ->each(function ($product) use ($result) {
-                    $result->add($product);
-                });
-        }
+            });
 
         return $result->toArray();
     }

@@ -12,6 +12,14 @@ class EloquentProductQueries implements ProductQuery
     private $productId;
 
     private $with;
+    /**
+     * @var string
+     */
+    private $status;
+    /**
+     * @var string
+     */
+    private $name;
 
     public function __construct(array $with = [])
     {
@@ -30,6 +38,20 @@ class EloquentProductQueries implements ProductQuery
         return $this;
     }
 
+    public function byStatus(string $status = null): EloquentProductQueries
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    public function byName(string $name = null): EloquentProductQueries
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
     public function execute($perPage = 10): \Illuminate\Contracts\Pagination\LengthAwarePaginator
     {
         $query = $this->getQuery();
@@ -40,6 +62,12 @@ class EloquentProductQueries implements ProductQuery
             })
             ->when($this->productId, function ($query) {
                 $query->where('id', $this->productId);
+            })
+            ->when($this->status, function ($query) {
+                $query->where('status', $this->status);
+            })
+            ->when($this->name, function ($query) {
+                $query->where('name', 'like', "%$this->name%");
             });
 
         return $query->paginate($perPage);
@@ -49,4 +77,5 @@ class EloquentProductQueries implements ProductQuery
     {
         return $this->with ? Product::with($this->with) : Product::query();
     }
+
 }

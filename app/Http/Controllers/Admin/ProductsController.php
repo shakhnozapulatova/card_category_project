@@ -27,7 +27,10 @@ class ProductsController extends Controller
     {
         $perPage = $request->get('perPage', Pagination::DEFAULT_PER_PAGE);
 
-        $products = $this->productQuery->execute($perPage);
+        $products = $this->productQuery
+            ->byStatus($request->get('status'))
+            ->byName($request->get('name'))
+            ->execute($perPage);
 
         return ProductResource::collection($products);
     }

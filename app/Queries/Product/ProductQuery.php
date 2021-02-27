@@ -9,5 +9,9 @@ interface ProductQuery
 
     public function byId(int $productId);
 
+    public function byStatus(string $status);
+
+    public function byName(string $name);
+
     public function execute();
 }
