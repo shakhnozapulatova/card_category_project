@@ -10,6 +10,18 @@
         },
       }
     },
+    computed: {
+      mappedOptions () {
+        const temp = []
+        for (const status in this.statuses) {
+          temp.push({
+            id: status,
+            name: this.statuses[status],
+          })
+        }
+        return temp
+      },
+    },
     methods: {
       getStatusLabelBySlug (slug) {
         return this.statuses[slug]

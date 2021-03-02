@@ -28,7 +28,7 @@
       },
       validationRule: {
         type: [String, Object, Array],
-        default: () => ([]),
+        default: '',
       },
       attributes: {
         type: [Array, Object],

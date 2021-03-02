@@ -1,7 +1,25 @@
 <template>
   <v-container>
     <v-card>
-      <data-table ref="productTable" :action="action" :headers="headers" :params="params">
+      {{ atxPath }}
+      <div class="d-flex my-5">
+        <v-select v-model="searchParams.status"
+                  style="max-width: 250px"
+                  label="Статус"
+                  outlined
+                  item-text="name"
+                  item-value="id"
+                  class="ml-auto"
+                  :items="mappedOptions"
+        />
+        <v-text-field v-model="searchParams.name"
+                      style="max-width: 250px"
+                      label="Поиск"
+                      outlined
+                      class="ml-5"
+        />
+      </div>
+      <data-table ref="productTable" :action="action" :headers="headers" :params="params" :search-options="searchParams">
         <template v-slot:item.editor.name="{ item }">
           <tr>
             <td>{{ item.editor ? item.editor.name : 'Отсутствует' }}</td>
@@ -66,6 +84,8 @@
   import { mapActions, mapMutations, mapState } from 'vuex'
   import headers from '@/components/dashboard/pages/products/table/headers'
   import SingleProductInfo from '@/components/dashboard/pages/products/SingleProductInfo'
+  import SelectField from '@/components/form/fields/SelectField'
+  import TextField from '@/components/form/fields/TextField'
   import LoadProductAttributesMixin from '@/components/dashboard/pages/products/mixins/LoadProductAttributesMixin'
   import LoadUsersListMixin from '@/components/dashboard/pages/users/mixins/LoadUsersListMixin'
   import ProductStatusMixin from '@/components/dashboard/pages/users/mixins/ProductStatusMixin'
@@ -73,7 +93,7 @@
   export default {
     name: 'Index',
     components: {
-      DataTable, SingleProductInfo,
+      DataTable, SingleProductInfo, SelectField, TextField,
     },
     mixins: [LoadProductAttributesMixin, LoadUsersListMixin, ProductStatusMixin],
     data () {
@@ -84,7 +104,8 @@
         },
         headers,
         searchParams: {
-          qs: '',
+          name: '',
+          status: '',
         },
         currentProduct: {},
         dialog: false,
@@ -92,6 +113,57 @@
     },
     computed: {
       ...mapState('auth', ['isAdmin', 'isEditor']),
+      atxPath () {
+        const atx = this.atx
+
+        // Todo make flexible
+        const loop = (arr, target, index, path) => {
+          if (arr[index].id === target) {
+            path.push({ name: arr[index].name, id: arr[index].id })
+          } else if (arr[index].children && arr[index].children.length) {
+            path.push({ name: arr[index].name, id: arr[index].id })
+            arr[index].children.forEach((_, i, a) => {
+              loop(a, target, i, path)
+            })
+
+            if (path[path.length - 1].id === arr[index].id) {
+              path.pop()
+            }
+          }
+        }
+
+        const getPath = (arr, target) => {
+          const path = []
+          arr.forEach((_, i, a) => loop(a, target, i, path))
+          return path
+        }
+
+        console.log(getPath(atx, 'J01CR02'))
+        return 1
+      },
+    },
+    created () {
+      const pages = [{ name: 'a', id: '1', pages: [{ name: 'b', id: '1.1', pages: [] }, { name: 'c', id: '1.2', pages: [{ name: 'd', id: '1.2.1', pages: [] }] }] }, { name: 'e', id: '2', pages: [] }]
+      const loop = (arr, target, index, path) => {
+        if (arr[index].id === target) {
+          path.push({ name: arr[index].name, id: arr[index].id })
+        } else if (arr[index].pages.length) {
+          path.push({ name: arr[index].name, id: arr[index].id })
+          arr[index].pages.forEach((_, i, a) => {
+            loop(a, target, i, path)
+          })
+
+          if (path[path.length - 1].id === arr[index].id) path.pop()
+        }
+      }
+
+      const getPath = (arr, target) => {
+        const path = []
+        arr.forEach((_, i, a) => loop(a, target, i, path))
+        return path
+      }
+      console.log(getPath(pages, 'a'))
+      // console.log(objectPath.get(obj, path))
     },
     methods: {
       ...mapActions('product', ['deleteProduct']),
@@ -113,6 +185,20 @@
       async removeProduct (productId) {
         this.deleteProduct(productId)
         await this.$refs.productTable.fetchPosts()
+      },
+
+      getPath (obj, item) {
+        for (const key in obj) {
+          if (obj[key] && typeof obj[key] === 'object') {
+            const result = this.getPath(obj[key], item)
+            if (result) {
+              result.unshift(key)
+              return result
+            }
+          } else if (obj[key] === item) {
+            return [key]
+          }
+        }
       },
     },
   }

@@ -12,7 +12,7 @@
 ## [1.0.3] 2019-09-11
 ### Bugfixing
 - move override import to vuetify plugin file
-- fix translation path
+- fix translation getPath
 - updated the style of some remaining components from `v1.0.2` with the `Creative Tim` style
 
 ## [1.0.2] 2019-09-06

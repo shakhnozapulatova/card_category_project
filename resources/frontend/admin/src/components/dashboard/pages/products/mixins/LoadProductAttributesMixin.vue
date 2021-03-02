@@ -31,6 +31,9 @@
           if (option.children) {
             formattedOption.children = this.formatAtxOptions(option.children)
           }
+          // else {
+          //   formattedOption.children = []
+          // }
 
           return formattedOption
         })
